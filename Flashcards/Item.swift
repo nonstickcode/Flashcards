@@ -11,8 +11,12 @@ import SwiftData
 @Model
 final class Item {
     var timestamp: Date
+    var id: String
+    var name: String
     
     init(timestamp: Date) {
         self.timestamp = timestamp
+        self.id = UUID().uuidString
+        self.name = "NOT SURE"
     }
 }

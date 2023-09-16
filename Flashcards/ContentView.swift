@@ -17,9 +17,13 @@ struct ContentView: View {
             List {
                 ForEach(items) { item in
                     NavigationLink {
+                        Text("Name: \(item.name)")
                         Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        Text("ID: \(item.id)")
+                        
                     } label: {
                         Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        
                     }
                 }
                 .onDelete(perform: deleteItems)
