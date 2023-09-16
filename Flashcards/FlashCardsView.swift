@@ -16,16 +16,20 @@ struct FlashCardsView: View {
     @State var userAnswer: String = ""
     
     // Alert related state variables
-    @State private var showAlert: Bool = false
-    @State private var alertTitle: String = ""
-    @State private var alertMessage: String = ""
+    @State private var showCorrectAnswerOverlay: Bool = false
+    @State private var correctAnswerMessage: String = ""
+    
+    @State private var showIncorrectAnswerOverlay: Bool = false
+    @State private var incorrectAnswerMessage: String = ""
     
     @State var correctAnsweredFlashCards: Int = 0
     @State var incorrectAnsweredFlashCards: Int = 0
     
     @State private var showCustomNameEntryAlert: Bool = false
-
+    
     @State private var playerName: String = ""
+    
+    @FocusState private var textFieldFocus: Bool
     
     
     var body: some View {
@@ -42,9 +46,7 @@ struct FlashCardsView: View {
                 
                 
                 HStack {
-                    
                     Spacer()
-                    
                     FlashNoteCard {
                         VStack {
                             Text("\(question) = ?")
@@ -57,37 +59,78 @@ struct FlashCardsView: View {
                                 .keyboardType(.numberPad)
                                 .frame(width: 150)
                                 .padding(.horizontal)
+                                .focused($textFieldFocus)
                             
                             Button("Check Answer") {
                                 checkAnswer()
                             }
-                            .frame(width: geometry.size.width * 0.6, height: 60) // Set dimensions as per your need
-                            .background(Color.blue) // Change to your preferred color
+                            .frame(width: geometry.size.width * 0.6, height: 60)
+                            .background(Color.blue)
                             .foregroundColor(.white)
-                            .cornerRadius(10) // Change the radius for rounded corners
+                            .cornerRadius(10)
                             .padding()
                             
                             Spacer()
-                            
                         }
-                        
                     }
                     .frame(width: geometry.size.width * 0.8)
-                    
+                    .overlay(
+                        Group {
+                            
+                            // CORRECT OVERLAY -------------------
+                            
+                            if showCorrectAnswerOverlay {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 25)
+                                        .frame(width: geometry.size.width * 0.8, height: 250)
+                                        .foregroundColor(Color.green)
+                                    
+                                    Text(correctAnswerMessage)
+                                        .font(.largeTitle)
+                                        .bold()
+                                        .foregroundColor(.white)
+                                }
+                                .onAppear {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                        showCorrectAnswerOverlay = false
+                                    }
+                                }
+                            }
+                            
+                            // -------------------------------------
+                            
+                            // INCORRECT OVERLAY -------------------
+                            
+                            if showIncorrectAnswerOverlay {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 25)
+                                        .frame(width: geometry.size.width * 0.8, height: 250)
+                                        .foregroundColor(Color.red)
+                                    
+                                    Text(incorrectAnswerMessage)
+                                        .font(.largeTitle)
+                                        .bold()
+                                        .foregroundColor(.white)
+                                }
+                                .onAppear {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                        showIncorrectAnswerOverlay = false
+                                    }
+                                }
+                            }
+                            
+                            // -------------------------------------
+                            
+                            
+                        }
+                    )
                     Spacer()
-                    
                 }
-                
-                Spacer()
-                
-                
                 
             }
             .onAppear {
                 generateQuestion()
-            }
-            .alert(isPresented: $showAlert) {
-                Alert(title: Text(alertTitle), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                textFieldFocus = true
             }
             .overlay(
                 Group {
@@ -120,41 +163,50 @@ struct FlashCardsView: View {
                             
                         }
                         .frame(width: geometry.size.width * 0.85, height: 375)
-                        .background(Color.blue)
+                        .background(Color.blue.gradient)
                         .cornerRadius(10)
                         .shadow(radius: 20)
                         
                         Spacer()
                     }
+                    
                 }
             )
-
-            
         }
-        
     }
     
     
     func generateQuestion() {
-        let num1 = Int.random(in: 1...10)
-        let num2 = Int.random(in: 1...10)
+        var num1: Int
+        var num2: Int
         
         switch operation {
         case .addition:
+            num1 = Int.random(in: 1...10)
+            num2 = Int.random(in: 1...10)
             question = "\(num1) + \(num2)"
             correctAnswer = num1 + num2
         case .subtraction:
+            num1 = Int.random(in: 1...10)
+            num2 = Int.random(in: 1...10)
+            if num2 > num1 {
+                swap(&num1, &num2)
+            }
             question = "\(num1) - \(num2)"
             correctAnswer = num1 - num2
         case .multiplication:
+            num1 = Int.random(in: 1...10)
+            num2 = Int.random(in: 1...10)
             question = "\(num1) × \(num2)"
             correctAnswer = num1 * num2
         case .division:
+            num2 = Int.random(in: 1...10)
+            let multiplier = Int.random(in: 1...10)
+            num1 = num2 * multiplier
             question = "\(num1) / \(num2)"
             correctAnswer = num1 / num2
         }
     }
-    
     
     
     func checkAnswer() {
@@ -163,26 +215,22 @@ struct FlashCardsView: View {
             
             if correctAnsweredFlashCards == 5 {
                 showCustomNameEntryAlert = true
+                correctAnsweredFlashCards = 0
+                incorrectAnsweredFlashCards = 0
             } else {
-                alertTitle = "Correct!"
-                alertMessage = "Good job! Moving to the next question."
-                showAlert = true
+                correctAnswerMessage = "Correct! Great job!"
+                showCorrectAnswerOverlay = true
             }
+            
             generateQuestion()
             userAnswer = ""  // Clears the input
         } else {
             incorrectAnsweredFlashCards += 1
             
-            alertTitle = "Incorrect!"
-            alertMessage = "Try again."
-            showAlert = true
-            
-            
+            incorrectAnswerMessage = "Incorrect! Try again."
+            showIncorrectAnswerOverlay = true
             
             userAnswer = ""  // Clears the input
         }
     }
-
-
-    
 }
