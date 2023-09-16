@@ -17,10 +17,7 @@ struct FlashCardsView: View {
     
     // Alert related state variables
     @State private var showCorrectAnswerOverlay: Bool = false
-    @State private var correctAnswerMessage: String = ""
-    
     @State private var showIncorrectAnswerOverlay: Bool = false
-    @State private var incorrectAnswerMessage: String = ""
     
     @State var correctAnsweredFlashCards: Int = 0
     @State var incorrectAnsweredFlashCards: Int = 0
@@ -40,7 +37,7 @@ struct FlashCardsView: View {
                     .bold()
                     .padding(.top, 10)
                 Text("Correct: \(correctAnsweredFlashCards)")
-                    .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                    .foregroundColor(.green)
                 Text("Incorrect: \(incorrectAnsweredFlashCards)")
                     .foregroundColor(.red)
                 
@@ -51,6 +48,7 @@ struct FlashCardsView: View {
                         VStack {
                             Text("\(question) = ?")
                                 .font(.system(size: 42))
+                                .foregroundColor(.white)
                                 .bold()
                                 .padding()
                             
@@ -83,12 +81,20 @@ struct FlashCardsView: View {
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 25)
                                         .frame(width: geometry.size.width * 0.8, height: 250)
-                                        .foregroundColor(Color.green)
-                                    
-                                    Text(correctAnswerMessage)
-                                        .font(.largeTitle)
-                                        .bold()
-                                        .foregroundColor(.white)
+                                        .foregroundColor(Color.green.opacity(0.98))
+                                    VStack {
+                                        Text("Correct!")
+                                            .font(.largeTitle)
+                                            .bold()
+                                            .foregroundColor(.white)
+                                            .padding()
+                                        
+                                        Text("Great Job!")
+                                            .font(.title)
+                                            .bold()
+                                            .foregroundColor(.white)
+                                            .padding()
+                                    }
                                 }
                                 .onAppear {
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -105,12 +111,20 @@ struct FlashCardsView: View {
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 25)
                                         .frame(width: geometry.size.width * 0.8, height: 250)
-                                        .foregroundColor(Color.red)
-                                    
-                                    Text(incorrectAnswerMessage)
-                                        .font(.largeTitle)
-                                        .bold()
-                                        .foregroundColor(.white)
+                                        .foregroundColor(Color.red.opacity(0.98))
+                                    VStack {
+                                        Text("Incorrect.")
+                                            .font(.largeTitle)
+                                            .bold()
+                                            .foregroundColor(.white)
+                                            .padding()
+                                        
+                                        Text("Try Again.")
+                                            .font(.title)
+                                            .bold()
+                                            .foregroundColor(.white)
+                                            .padding()
+                                    }
                                 }
                                 .onAppear {
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -218,18 +232,13 @@ struct FlashCardsView: View {
                 correctAnsweredFlashCards = 0
                 incorrectAnsweredFlashCards = 0
             } else {
-                correctAnswerMessage = "Correct! Great job!"
                 showCorrectAnswerOverlay = true
             }
-            
             generateQuestion()
             userAnswer = ""  // Clears the input
         } else {
             incorrectAnsweredFlashCards += 1
-            
-            incorrectAnswerMessage = "Incorrect! Try again."
             showIncorrectAnswerOverlay = true
-            
             userAnswer = ""  // Clears the input
         }
     }
