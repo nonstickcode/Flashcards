@@ -95,15 +95,17 @@ struct FlashCardsView: View {
                         VStack {
                             Text("Congratulations!")
                                 .font(.title)
+                                .foregroundColor(.white)
+                                .padding(10)
                             Text("You've answered 5 questions correctly. Enter your name:")
-                                .padding(.bottom, 10)
+                                .foregroundColor(.white)
+                                .padding(10)
                             TextField("Name", text: $playerName)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .padding(.horizontal, 20)
-                                .padding(.bottom, 10)
+                                .padding(10)
                                 .keyboardType(.alphabet)
                             Button("OK") {
-                                // Handle OK button tap, possibly save playerName
                                 
                                 // add high score update function call------------------------------
                                 
@@ -113,11 +115,16 @@ struct FlashCardsView: View {
                             .background(Color.white)
                             .cornerRadius(10)
                             .shadow(radius: 20)
+                            .bold()
+                            .padding(10)
+                            
                         }
-                        .frame(width: geometry.size.width * 0.85, height: 300)
+                        .frame(width: geometry.size.width * 0.85, height: 375)
                         .background(Color.blue)
                         .cornerRadius(10)
                         .shadow(radius: 20)
+                        
+                        Spacer()
                     }
                 }
             )
