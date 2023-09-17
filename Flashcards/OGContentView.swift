@@ -9,13 +9,10 @@ import SwiftUI
 import SwiftData
 
 
-
-
 struct OGContentView: View {
     
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
-    
     
     
     var body: some View {
@@ -48,7 +45,6 @@ struct OGContentView: View {
         } detail: {
             Text("Select an item")
         }
-
     }
     
     
@@ -66,17 +62,9 @@ struct OGContentView: View {
             }
         }
     }
-    
-    
-    
 }
-
-
-
 
 
 #Preview {
     OGContentView()
 }
-
-
