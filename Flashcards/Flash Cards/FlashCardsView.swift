@@ -6,8 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct FlashCardsView: View {
+    
+    @Environment(\.modelContext) private var modelContext
+    @Query private var items: [Item]
     
     
     var operation: MathOperation
@@ -19,14 +23,15 @@ struct FlashCardsView: View {
     @State private var showCorrectAnswerOverlay: Bool = false
     @State private var showIncorrectAnswerOverlay: Bool = false
     
-    @State var correctAnsweredFlashCards: Int = 0
-    @State var incorrectAnsweredFlashCards: Int = 0
-    
     @State private var showCustomNameEntryAlert: Bool = false
     
-    @State private var playerName: String = ""
-    
     @FocusState private var textFieldFocus: Bool
+    
+    @State private var playerName: String = ""
+    @State private var score: Double = 0
+    
+    @State var correctAnsweredFlashCards: Int = 0  // score of player in round
+    @State var incorrectAnsweredFlashCards: Int = 0 // score of player in round
     
     
     var body: some View {
@@ -97,7 +102,7 @@ struct FlashCardsView: View {
                                     }
                                 }
                                 .onAppear {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
                                         showCorrectAnswerOverlay = false
                                     }
                                 }
@@ -127,7 +132,7 @@ struct FlashCardsView: View {
                                     }
                                 }
                                 .onAppear {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
                                         showIncorrectAnswerOverlay = false
                                     }
                                 }
@@ -154,19 +159,30 @@ struct FlashCardsView: View {
                                 .font(.title)
                                 .foregroundColor(.white)
                                 .padding(10)
-                            Text("You've answered 5 questions correctly. Enter your name:")
+                            Text("You've answered 5 questions correctly.")
                                 .foregroundColor(.white)
-                                .padding(10)
+                                .padding(5)
+                            Text("Your score: \(score)")
+                                .foregroundColor(.white)
+                                .padding(5)
+                            Text("Enter your name below:")
+                                .foregroundColor(.white)
+                                .padding(5)
+                            
                             TextField("Name", text: $playerName)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .padding(.horizontal, 20)
                                 .padding(10)
                                 .keyboardType(.alphabet)
                             Button("OK") {
+                                // Your existing logic here, like saving the high score, goes here
+                                   savePlayerScore()
+                                   
+                                   // Reset the game
+                                   resetGame()
+                                   
+                                   showCustomNameEntryAlert = false
                                 
-                                // add high score update function call------------------------------
-                                
-                                showCustomNameEntryAlert = false
                             }
                             .frame(width: geometry.size.width * 0.4, height: 50)
                             .background(Color.white)
@@ -180,6 +196,9 @@ struct FlashCardsView: View {
                         .background(Color.blue.gradient)
                         .cornerRadius(10)
                         .shadow(radius: 20)
+                        .onAppear {
+                            calculateScore()
+                        }
                         
                         Spacer()
                     }
@@ -226,11 +245,11 @@ struct FlashCardsView: View {
     func checkAnswer() {
         if let userIntAnswer = Int(userAnswer), userIntAnswer == correctAnswer {
             correctAnsweredFlashCards += 1
-            
+
+            calculateScore()  // update score
+
             if correctAnsweredFlashCards == 5 {
                 showCustomNameEntryAlert = true
-                correctAnsweredFlashCards = 0
-                incorrectAnsweredFlashCards = 0
             } else {
                 showCorrectAnswerOverlay = true
             }
@@ -238,8 +257,53 @@ struct FlashCardsView: View {
             userAnswer = ""  // Clears the input
         } else {
             incorrectAnsweredFlashCards += 1
+            
+            calculateScore()  // update score
+            
             showIncorrectAnswerOverlay = true
             userAnswer = ""  // Clears the input
         }
     }
+
+    
+    private func calculateScore() {
+        let totalQuestions = correctAnsweredFlashCards + incorrectAnsweredFlashCards
+        
+        if totalQuestions == 0 {
+            score = 0
+            return
+        }
+        
+        let correctPercentage = Double(correctAnsweredFlashCards) / Double(totalQuestions)
+        let incorrectPercentage = Double(incorrectAnsweredFlashCards) / Double(totalQuestions)
+        
+        score = (correctPercentage * 100) - (incorrectPercentage * 50)
+        
+        // Ensure the score is within 0 and 100
+        score = max(0, min(score, 100))
+    }
+    
+    
+    func savePlayerScore() {
+        let newItem = Item(timestamp: Date())
+        
+        // Populate fields
+        newItem.name = playerName
+        newItem.score = score
+        
+        // Insert into data store
+        modelContext.insert(newItem)
+    }
+
+    
+    func resetGame() {
+        correctAnsweredFlashCards = 0
+        incorrectAnsweredFlashCards = 0
+        score = 0
+        playerName = ""
+        generateQuestion()
+        userAnswer = ""
+    }
+    
+    
 }

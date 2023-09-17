@@ -106,8 +106,8 @@
 		2BF6C8622AB6970400127F9A /* Operation Buttons */ = {
 			isa = PBXGroup;
 			children = (
-				2B1E58F32AB64D3000600305 /* OperationButtonView.swift */,
 				2B1E58F52AB64D7000600305 /* RoundedRectangleContainer.swift */,
+				2B1E58F32AB64D3000600305 /* OperationButtonView.swift */,
 			);
 			path = "Operation Buttons";
 			sourceTree = "<group>";
