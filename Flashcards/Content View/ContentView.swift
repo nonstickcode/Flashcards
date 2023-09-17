@@ -14,6 +14,17 @@ struct ContentView: View {
     
     @State private var showDataOverlay: Bool = false
     
+    var sortedItems: [Item] {
+        items.sorted {
+            if $0.score == $1.score {
+                return $0.timestamp > $1.timestamp
+            } else {
+                return $0.score > $1.score
+            }
+        }
+    }
+
+    
     
     
     var body: some View {
@@ -122,16 +133,35 @@ struct ContentView: View {
             .overlay(
                 Group {
                     if showDataOverlay {
-                        VStack {
+                        
+                        NavigationSplitView {
+                            
                             List {
-                                ForEach(items) { item in
-                                    Text("Name: \(item.name)")
-                                    Text("Score: \(item.score)")
-                                    Text("Created: \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                                    Text("ID: \(item.id)")
-                                    Rectangle()
+                                ForEach(sortedItems, id: \.id) { item in
+                                    NavigationLink {
+                                        VStack {
+                                            Text("Name: \(item.name)")
+                                            Text("Score: \(item.score)")
+                                            Text("Created: \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                                            Text("ID: \(item.id)")
+                                        }
+                                        
+                                    } label: {
+                                        Text("\(item.name) scored \(item.score)")
+                                        
+                                    }
                                 }
-                                
+                                .onDelete(perform: deleteItems)
+                            }
+                            .toolbar {
+                                ToolbarItem(placement: .navigationBarTrailing) {
+                                    EditButton()
+                                }
+                                ToolbarItem {
+                                    Button(action: addItem) {
+                                        Label("Add Item", systemImage: "plus")
+                                    }
+                                }
                             }
                             Button("Close") {
                                 showDataOverlay = false
@@ -141,10 +171,13 @@ struct ContentView: View {
                             .foregroundColor(.white)
                             .cornerRadius(8)
                             .padding()
+                        } detail: {
+                            Text("Select an item")
                         }
-                        .frame(width: geometry.size.width * 0.9, height: geometry.size.height * 0.9)
+                        .frame(width: geometry.size.width * 0.9, height: geometry.size.height * 1)
                         .background(Color.white)
                         .cornerRadius(15)
+                        .border(.black, width: 2)
                     }
                 }
             )
@@ -164,10 +197,13 @@ struct ContentView: View {
     
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+                for index in offsets {
+                    let item = sortedItems[index]
+                    if let originalIndex = items.firstIndex(where: { $0.id == item.id }) {
+                        modelContext.delete(items[originalIndex])
+                    }
+                }
             }
-        }
     }
 }
 
