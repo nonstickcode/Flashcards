@@ -49,7 +49,7 @@ struct ContentView: View {
                     VStack {
                         ScrollView(.vertical, showsIndicators: false) {
                             HStack {
-                                Text("Math Flashcards")
+                                Text("Practice Math Flashcards")
                                     .font(.headline)
                                 Spacer()
                             }
@@ -59,7 +59,7 @@ struct ContentView: View {
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack {
                                     ForEach(MathOperation.allCases, id: \.self) { operation in
-                                        OperationButtonView(operation: operation)
+                                        OperationButtonView(operation: operation, isPractice: true)
                                     }
                                 }
                                 .scrollTargetLayout()
@@ -69,7 +69,7 @@ struct ContentView: View {
                             
                             
                             HStack {
-                                Text("Other Stuff")
+                                Text("Test Math Flashcards")
                                     .font(.headline)
                                 Spacer()
                             }
@@ -85,7 +85,7 @@ struct ContentView: View {
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack {
                                     ForEach(MathOperation.allCases, id: \.self) { operation in
-                                        OperationButtonView(operation: operation)
+                                        OperationButtonView(operation: operation, isPractice: false)
                                     }
                                 }
                                 .scrollTargetLayout()

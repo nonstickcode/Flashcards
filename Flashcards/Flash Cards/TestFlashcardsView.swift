@@ -1,5 +1,5 @@
 //
-//  FlashCardsView.swift
+//  TestFlashcardsView.swift
 //  Flashcards
 //
 //  Created by Cody McRoy on 9/16/23.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct FlashCardsView: View {
+struct TestFlashcardsView: View {
     
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
@@ -209,7 +209,7 @@ struct FlashCardsView: View {
     }
     
     
-    func generateQuestion() {
+    private func generateQuestion() {
         var num1: Int
         var num2: Int
         

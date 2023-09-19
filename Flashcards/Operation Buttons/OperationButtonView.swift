@@ -26,8 +26,12 @@ enum MathOperation: String, CaseIterable {
 
 struct OperationButtonView: View {
     let operation: MathOperation
+    
+    let isPractice: Bool
+    
+    
     var body: some View {
-        NavigationLink(destination: FlashCardsView(operation: operation)) {
+        NavigationLink(destination: isPractice ? AnyView(PracticeFlashcardsView(operation: operation)) : AnyView(TestFlashcardsView(operation: operation))) {
             RoundedRectangleContainer {
                 VStack {
                     Image(systemName: operation.symbol)
@@ -35,7 +39,7 @@ struct OperationButtonView: View {
                         .frame(width: 40, height: 40)
                         .foregroundColor(.white)
                         .padding()
-                    Text(operation.rawValue)
+                    Text(isPractice ? "Practice \(operation.rawValue)" : "Test \(operation.rawValue)")
                         .foregroundColor(.white)
                         .font(.headline)
                         .padding()
