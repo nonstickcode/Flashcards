@@ -16,7 +16,7 @@ struct RoundedRectangleContainer<Content: View>: View {
     
     var body: some View {
         Rectangle()
-            .frame(height: 300)
+            .frame(height: 200)
             .background(.pink.gradient)
             .foregroundColor(.clear)
             .overlay(content)

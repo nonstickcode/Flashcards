@@ -23,9 +23,12 @@ struct PracticeFlashcardsView: View {
     @State private var showAnswer: Bool = false
     @State private var flashcardsShown: Int = 0
     
+    @State private var answerContainerWidth: CGFloat = 0
+    
     
     var body: some View {
         GeometryReader { geometry in
+            
             VStack {
                 Text("\(operation.rawValue) Flashcards")
                     .font(.title)
@@ -38,36 +41,54 @@ struct PracticeFlashcardsView: View {
                 HStack {
                     Spacer()
                     FlashNoteCard {
+                        
                         VStack {
                             Spacer()
-                            Text(showAnswer ? "\(question) = \(correctAnswer)" : "\(question) = ?")
-                                .font(.system(size: 42))
-                                .foregroundColor(.white)
-                                .bold()
-                                .padding()
+                            HStack {
+                                
+                                Spacer()
+                                
+                                Text("\(question) = ")
+                                    .font(.system(size: 42))
+                                    .foregroundColor(.white)
+                                    .bold()
+                                    .padding([.top, .bottom])
+                                    .padding(.trailing, -5)
+                                //                                    .border(Color.black, width: 2)
+                                
+                                Text(showAnswer ? "\(correctAnswer)" : "?")
+                                    .font(.system(size: 42))
+                                    .foregroundColor(.white)
+                                    .bold()
+                                    .padding([.top, .bottom])
+                                    .padding(.leading, -5)
+                                    .frame(width: answerContainerWidth)
+                                //                                    .border(Color.black, width: 2)
+                                
+                                Spacer()
+                                
+                            }
                             
-                            
-                            Button(showAnswer ? "Next Problem" : "Show Answer") {
+                            Button(action: {
                                 if showAnswer {
-                                   
                                     generateQuestion()
                                     showAnswer = false
-                                    
-                                    
                                 } else {
                                     showAnswer.toggle()
                                     flashcardsShown += 1
-                                    
                                 }
+                            }) {
+                                Text(showAnswer ? "Next Problem" : "Show Answer")
+                                    .frame(width: geometry.size.width * 0.6, height: 60)
+                                    .background(showAnswer ? Color.green : Color.blue)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                                    .padding()
                             }
-                            .frame(width: geometry.size.width * 0.6, height: 60)
-                            .background(showAnswer ? Color.green : Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                            .padding()
                             
                             Spacer()
                         }
+                        
                     }
                     .frame(width: geometry.size.width * 0.8)
                     
@@ -77,9 +98,7 @@ struct PracticeFlashcardsView: View {
             }
             .onAppear {
                 generateQuestion()
-                
             }
-            
         }
     }
     
@@ -115,10 +134,19 @@ struct PracticeFlashcardsView: View {
             correctAnswer = num1 / num2
         }
         
+        answerContainerWidth = getWidthForAnswer(correctAnswer)
         
     }
     
-    
+    private func getWidthForAnswer(_ answer: Int) -> CGFloat {
+        // Calculate the width based on the number of digits in the answer
+        let answerString = "\(answer)"
+        let font = UIFont.systemFont(ofSize: 42) // Use the appropriate font
+        let fontAttributes = [NSAttributedString.Key.font: font]
+        let size = (answerString as NSString).size(withAttributes: fontAttributes)
+        
+        return size.width
+    }
     
     
 }

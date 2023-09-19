@@ -161,10 +161,12 @@ struct ContentView: View {
                                     }
                                 }
                             }
-                            Button("Close") {
+                            Button(action: {
                                 showDataOverlay = false
+                            }) {
+                                Text("Close")
+                                    .frame(width: 100, height: 40)
                             }
-                            .frame(width: 100, height: 40)
                             .background(Color.red)
                             .foregroundColor(.white)
                             .cornerRadius(8)
