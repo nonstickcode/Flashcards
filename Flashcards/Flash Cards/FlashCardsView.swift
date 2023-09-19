@@ -288,7 +288,11 @@ struct FlashCardsView: View {
         let newItem = Item(timestamp: Date())
         
         // Populate fields
-        newItem.name = playerName
+        if playerName.isEmpty {
+            newItem.name = "Unknown"
+        } else {
+            newItem.name = playerName
+        }
         newItem.score = score
         
         // Insert into data store

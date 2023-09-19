@@ -50,7 +50,6 @@ struct ContentView: View {
                         ScrollView(.vertical, showsIndicators: false) {
                             HStack {
                                 Text("Math Flashcards")
-                                    .foregroundColor(.black)
                                     .font(.headline)
                                 Spacer()
                             }
@@ -71,7 +70,6 @@ struct ContentView: View {
                             
                             HStack {
                                 Text("Other Stuff")
-                                    .foregroundColor(.black)
                                     .font(.headline)
                                 Spacer()
                             }
