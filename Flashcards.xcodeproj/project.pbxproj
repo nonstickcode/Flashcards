@@ -72,7 +72,7 @@
 				2BF6C8642AB6973A00127F9A /* Content View */,
 				2BF6C8632AB6972300127F9A /* Header View */,
 				2BF6C8622AB6970400127F9A /* Operation Buttons */,
-				2BF6C8612AB696E200127F9A /* Flash Cards */,
+				2BF6C8612AB696E200127F9A /* Flashcards */,
 				2B1E58F72AB64DA700600305 /* Core Data */,
 				2B1E58E82AB6374900600305 /* Preview Content */,
 				2B1E58FC2AB650D400600305 /* OGContentView.swift */,
@@ -96,14 +96,14 @@
 			path = "Core Data";
 			sourceTree = "<group>";
 		};
-		2BF6C8612AB696E200127F9A /* Flash Cards */ = {
+		2BF6C8612AB696E200127F9A /* Flashcards */ = {
 			isa = PBXGroup;
 			children = (
 				2B1E58FA2AB64E2A00600305 /* FlashNoteCard.swift */,
 				2B1E58F82AB64DD600600305 /* TestFlashcardsView.swift */,
 				2BB52A6D2ABA1E95009E2A8F /* PracticeFlashcardsView.swift */,
 			);
-			path = "Flash Cards";
+			path = Flashcards;
 			sourceTree = "<group>";
 		};
 		2BF6C8622AB6970400127F9A /* Operation Buttons */ = {
