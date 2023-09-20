@@ -29,15 +29,24 @@ struct PracticeFlashcardsView: View {
     var body: some View {
         GeometryReader { geometry in
             
+            let isLandscape = geometry.size.width > geometry.size.height
+            
             VStack {
-                Text("\(operation.rawValue)")
-                    .font(.title)
-                    .bold()
-                    .padding(.top, 10)
-                Text("Flashcards shown this session \(flashcardsShown)")
-                    .foregroundColor(.blue)
-                
-                
+                if isLandscape {
+                    HStack {
+                        
+                        Text("Flashcards: \(flashcardsShown)")
+                            .foregroundColor(.blue)
+                    }
+                    
+                } else {
+                    Text("\(operation.rawValue)")
+                        .font(.title)
+                        .bold()
+                        .padding(.top, 10)
+                    Text("Flashcards: \(flashcardsShown)")
+                        .foregroundColor(.blue)
+                }
                 HStack {
                     Spacer()
                     FlashNoteCard {
@@ -49,12 +58,12 @@ struct PracticeFlashcardsView: View {
                                 Spacer()
                                 
                                 Text("\(question) = ")
-                                    .font(.system(size: 42))
+                                    .font(.system(size: isLandscape ? 50 : 42))
                                     .foregroundColor(.white)
                                     .bold()
-                                    .padding([.top, .bottom])
+                                    .padding([.top, .bottom], isLandscape ? 20 : 10)
                                     .padding(.trailing, -5)
-                                //                                    .border(Color.black, width: 2)
+                                
                                 
                                 Text(showAnswer ? "\(correctAnswer)" : "?")
                                     .font(.system(size: 42))
@@ -63,7 +72,7 @@ struct PracticeFlashcardsView: View {
                                     .padding([.top, .bottom])
                                     .padding(.leading, -5)
                                     .frame(width: answerContainerWidth)
-                                //                                    .border(Color.black, width: 2)
+                               
                                 
                                 Spacer()
                                 
@@ -78,7 +87,7 @@ struct PracticeFlashcardsView: View {
                                     flashcardsShown += 1
                                 }
                             }) {
-                                Text(showAnswer ? "Next Problem" : "Show Answer")
+                                Text(showAnswer ? "NEXT" : "Show Answer")
                                     .frame(width: geometry.size.width * 0.6, height: 60)
                                     .background(showAnswer ? Color.green : Color.blue)
                                     .foregroundColor(.white)
@@ -90,7 +99,7 @@ struct PracticeFlashcardsView: View {
                         }
                         
                     }
-                    .frame(width: geometry.size.width * 0.8)
+                    .frame(width: geometry.size.width * (isLandscape ? 1 : 0.8))
                     
                     Spacer()
                 }
