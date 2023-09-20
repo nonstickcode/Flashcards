@@ -51,10 +51,11 @@ struct ContentView: View {
                             HStack {
                                 Text("Practice Math Flashcards")
                                     .font(.headline)
-                                Spacer()
+                                    
+                                
                             }
                             .padding(.top, 85)  // this keeps the scrollable content below the header at start
-                            .padding(.leading, 20)
+                            
                             
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack {
@@ -65,22 +66,15 @@ struct ContentView: View {
                                 .scrollTargetLayout()
                             }
                             .scrollTargetBehavior(.viewAligned)
-                            .contentMargins(20, for: .scrollContent)
+                            .contentMargins(100, for: .scrollContent)
                             
-                            
+                           
+
                             HStack {
                                 Text("Test Math Flashcards")
                                     .font(.headline)
-                                Spacer()
+                                
                             }
-                            .padding(.top, 85)  // this keeps the scrollable content below the header at start
-                            .padding(.leading, 20)
-                            
-                            
-                            
-                            
-                            
-                            
                             
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack {
@@ -89,10 +83,13 @@ struct ContentView: View {
                                     }
                                 }
                                 .scrollTargetLayout()
+//
                             }
                             .scrollTargetBehavior(.viewAligned)
-                            .contentMargins(20, for: .scrollContent)
+                            .contentMargins(100, for: .scrollContent)
                             
+                                                        
+
                             
                             Button("Print items") {
                                 print(items)

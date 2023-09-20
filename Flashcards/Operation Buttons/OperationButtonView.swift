@@ -38,11 +38,15 @@ struct OperationButtonView: View {
                         .resizable()
                         .frame(width: 40, height: 40)
                         .foregroundColor(.white)
-                        .padding()
-                    Text(isPractice ? "Practice \(operation.rawValue)" : "Test \(operation.rawValue)")
+                        
+                    Text(isPractice ? "Practice" : "Test")
                         .foregroundColor(.white)
-                        .font(.headline)
-                        .padding()
+                        .font(.subheadline)
+                        
+                    Text(isPractice ? "\(operation.rawValue)" : "\(operation.rawValue)")
+                        .foregroundColor(.white)
+                        .font(.subheadline)
+                        
                 }
             }
         }
