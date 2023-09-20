@@ -66,7 +66,7 @@ struct ContentView: View {
                                 .scrollTargetLayout()
                             }
                             .scrollTargetBehavior(.viewAligned)
-                            .contentMargins(100, for: .scrollContent)
+                            .contentMargins(75, for: .scrollContent)
                             
                            
 
@@ -86,28 +86,28 @@ struct ContentView: View {
 
                             }
                             .scrollTargetBehavior(.viewAligned)
-                            .contentMargins(100, for: .scrollContent)
+                            .contentMargins(75, for: .scrollContent)
                             
                                                         
 
                             
-                            Button("Print items") {
-                                print(items)
-                            }
-                            .frame(width: geometry.size.width * 0.5, height: 60)
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                            .padding()
-                            
-                            Button("Add item") {
-                                addItem()
-                            }
-                            .frame(width: geometry.size.width * 0.5, height: 60)
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                            .padding()
+//                            Button("Print items") {
+//                                print(items)
+//                            }
+//                            .frame(width: geometry.size.width * 0.5, height: 60)
+//                            .background(Color.blue)
+//                            .foregroundColor(.white)
+//                            .cornerRadius(10)
+//                            .padding()
+//                            
+//                            Button("Add item") {
+//                                addItem()
+//                            }
+//                            .frame(width: geometry.size.width * 0.5, height: 60)
+//                            .background(Color.blue)
+//                            .foregroundColor(.white)
+//                            .cornerRadius(10)
+//                            .padding()
                             
                             Button("Show Data") {
                                 showDataOverlay.toggle()

@@ -36,17 +36,17 @@ struct OperationButtonView: View {
                 VStack {
                     Image(systemName: operation.symbol)
                         .resizable()
-                        .frame(width: 40, height: 40)
+                        .frame(width: 70, height: 70)
                         .foregroundColor(.white)
-                        
-                    Text(isPractice ? "Practice" : "Test")
-                        .foregroundColor(.white)
-                        .font(.subheadline)
                         
                     Text(isPractice ? "\(operation.rawValue)" : "\(operation.rawValue)")
                         .foregroundColor(.white)
-                        .font(.subheadline)
+                        .font(.headline)
                         
+                    Text(isPractice ? "Practice" : "Test")
+                        .foregroundColor(.white)
+                        .font(.headline)
+                    
                 }
             }
         }

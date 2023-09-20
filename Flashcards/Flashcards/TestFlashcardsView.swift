@@ -38,7 +38,7 @@ struct TestFlashcardsView: View {
         GeometryReader { geometry in
             ScrollView(.vertical, showsIndicators: false) {
                 VStack {
-                    Text("\(operation.rawValue) Flashcards")
+                    Text("\(operation.rawValue)")
                         .font(.title)
                         .bold()
                         .padding(.top, 10)

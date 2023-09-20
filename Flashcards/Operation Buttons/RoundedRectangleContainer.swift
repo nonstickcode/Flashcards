@@ -16,13 +16,13 @@ struct RoundedRectangleContainer<Content: View>: View {
     
     var body: some View {
         Rectangle()
-            .frame(height: 150)
+            .frame(height: 200)
             .containerRelativeFrame(.horizontal)
-            .background(.pink.gradient)
+            .background(.green.gradient)
             .foregroundColor(.clear)
             .overlay(content)
             .clipShape(.rect(cornerRadius: 25))
-            .padding(.top, -80)
+            .padding(.top, -50)
             .padding(.bottom, -40)
             
     }

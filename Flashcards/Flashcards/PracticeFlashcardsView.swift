@@ -30,7 +30,7 @@ struct PracticeFlashcardsView: View {
         GeometryReader { geometry in
             
             VStack {
-                Text("\(operation.rawValue) Flashcards")
+                Text("\(operation.rawValue)")
                     .font(.title)
                     .bold()
                     .padding(.top, 10)
