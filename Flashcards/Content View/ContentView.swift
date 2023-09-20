@@ -83,7 +83,7 @@ struct ContentView: View {
                                     }
                                 }
                                 .scrollTargetLayout()
-//
+
                             }
                             .scrollTargetBehavior(.viewAligned)
                             .contentMargins(100, for: .scrollContent)
@@ -94,25 +94,25 @@ struct ContentView: View {
                             Button("Print items") {
                                 print(items)
                             }
-                            .frame(width: geometry.size.width * 0.5, height: 60) // Set dimensions as per your need
-                            .background(Color.blue) // Change to your preferred color
+                            .frame(width: geometry.size.width * 0.5, height: 60)
+                            .background(Color.blue)
                             .foregroundColor(.white)
-                            .cornerRadius(10) // Change the radius for rounded corners
+                            .cornerRadius(10)
                             .padding()
                             
                             Button("Add item") {
                                 addItem()
                             }
-                            .frame(width: geometry.size.width * 0.5, height: 60) // Set dimensions as per your need
-                            .background(Color.blue) // Change to your preferred color
+                            .frame(width: geometry.size.width * 0.5, height: 60)
+                            .background(Color.blue)
                             .foregroundColor(.white)
-                            .cornerRadius(10) // Change the radius for rounded corners
+                            .cornerRadius(10)
                             .padding()
                             
                             Button("Show Data") {
                                 showDataOverlay.toggle()
                             }
-                            .frame(width: 200, height: 60)
+                            .frame(width: geometry.size.width * 0.5, height: 60)
                             .background(Color.blue)
                             .foregroundColor(.white)
                             .cornerRadius(10)
@@ -125,11 +125,12 @@ struct ContentView: View {
                 }
             }
             .navigationBarHidden(true)
+            .navigationViewStyle(StackNavigationViewStyle())
             .overlay(
                 Group {
                     if showDataOverlay {
                         
-                        NavigationSplitView {
+                        NavigationStack {
                             
                             List {
                                 ForEach(sortedItems, id: \.id) { item in
@@ -168,13 +169,13 @@ struct ContentView: View {
                             .foregroundColor(.white)
                             .cornerRadius(8)
                             .padding()
-                        } detail: {
-                            Text("Select an item")
                         }
+                        
                         .frame(width: geometry.size.width * 0.9, height: geometry.size.height * 1)
                         .background(Color.white)
                         .cornerRadius(15)
                         .border(.black, width: 2)
+                        
                     }
                 }
             )
