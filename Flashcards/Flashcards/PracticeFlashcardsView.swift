@@ -26,44 +26,41 @@ struct PracticeFlashcardsView: View {
     @State private var answerContainerWidth: CGFloat = 0
     
     
+    @State private var arrowOffset: CGFloat = 0
+    
+    
     var body: some View {
         GeometryReader { geometry in
             
             let isLandscape = geometry.size.width > geometry.size.height
             
             VStack {
+                Spacer()
                 if isLandscape {
-                    HStack {
+                    Text("Flashcard count: \(flashcardsShown)")
+                        .foregroundColor(.blue)
                         
-                        Text("Flashcards: \(flashcardsShown)")
-                            .foregroundColor(.blue)
-                    }
-                    
                 } else {
                     Text("\(operation.rawValue)")
                         .font(.title)
                         .bold()
                         .padding(.top, 10)
-                    Text("Flashcards: \(flashcardsShown)")
+                    Text("Flashcard count: \(flashcardsShown)")
                         .foregroundColor(.blue)
                 }
                 HStack {
                     Spacer()
                     FlashNoteCard {
-                        
                         VStack {
                             Spacer()
                             HStack {
-                                
                                 Spacer()
-                                
                                 Text("\(question) = ")
                                     .font(.system(size: isLandscape ? 50 : 42))
                                     .foregroundColor(.white)
                                     .bold()
                                     .padding([.top, .bottom], isLandscape ? 20 : 10)
                                     .padding(.trailing, -5)
-                                
                                 
                                 Text(showAnswer ? "\(correctAnswer)" : "?")
                                     .font(.system(size: 42))
@@ -72,12 +69,9 @@ struct PracticeFlashcardsView: View {
                                     .padding([.top, .bottom])
                                     .padding(.leading, -5)
                                     .frame(width: answerContainerWidth)
-                               
                                 
                                 Spacer()
-                                
                             }
-                            
                             Button(action: {
                                 if showAnswer {
                                     generateQuestion()
@@ -87,22 +81,48 @@ struct PracticeFlashcardsView: View {
                                     flashcardsShown += 1
                                 }
                             }) {
-                                Text(showAnswer ? "NEXT" : "Show Answer")
-                                    .frame(width: geometry.size.width * 0.6, height: 60)
-                                    .background(showAnswer ? Color.green : Color.blue)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(10)
-                                    .padding()
+                                HStack {
+                                    if showAnswer {
+                                        Text("NEXT")
+                                            .frame(height: 60)
+                                            .foregroundColor(.white)
+                                            .bold()
+                                        
+                                        Image(systemName: "arrow.forward")
+                                            .foregroundColor(.white)
+                                            .bold()
+                                            .offset(x: arrowOffset)
+                                            .onAppear {
+                                                withAnimation(Animation.easeInOut(duration: 1).repeatForever(autoreverses: true)) {
+                                                    arrowOffset = 10
+                                                }
+                                            }
+                                            .onDisappear {
+                                                arrowOffset = 0
+                                            }
+                                        
+                                    } else {
+                                        Text("Show Answer")
+                                            .frame(height: 60)
+                                            .foregroundColor(.white)
+                                    }
+                                }
+                                .frame(width: geometry.size.width * 0.6)
+                                .background(showAnswer ? Color.green : Color.blue)
+                                .cornerRadius(10)
+                                .padding()
                             }
+                            
                             
                             Spacer()
                         }
                         
                     }
-                    .frame(width: geometry.size.width * (isLandscape ? 1 : 0.8))
+                    .frame(width: geometry.size.width * 0.95)
                     
                     Spacer()
                 }
+                Spacer()
                 
             }
             .onAppear {
