@@ -16,7 +16,7 @@ struct FlashNoteCard<Content: View>: View {
     
     var body: some View {
         Rectangle()
-            .frame(height: 250)
+            
             .background(.black.opacity(0.7).gradient)
             .foregroundColor(.clear)
             .overlay(content)

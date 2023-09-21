@@ -33,6 +33,7 @@ struct PracticeFlashcardsView: View {
         GeometryReader { geometry in
             
             let isLandscape = geometry.size.width > geometry.size.height
+            let thisCardFontSize: CGFloat = isLandscape ? 60 : 50
             
             VStack {
                 Spacer()
@@ -56,25 +57,28 @@ struct PracticeFlashcardsView: View {
                             HStack {
                                 Spacer()
                                 Text("\(question) = ")
-                                    .font(.system(size: isLandscape ? 50 : 42))
+                                    .font(.system(size: thisCardFontSize))
                                     .foregroundColor(.white)
                                     .bold()
                                     .padding([.top, .bottom], isLandscape ? 20 : 10)
                                     .padding(.trailing, -5)
+                                    
                                 
                                 Text(showAnswer ? "\(correctAnswer)" : "?")
-                                    .font(.system(size: 42))
+                                    .font(.system(size: thisCardFontSize))
                                     .foregroundColor(.white)
                                     .bold()
-                                    .padding([.top, .bottom])
+                                    .padding([.top, .bottom], isLandscape ? 20 : 10)
                                     .padding(.leading, -5)
                                     .frame(width: answerContainerWidth)
                                 
                                 Spacer()
                             }
+                            .padding(.bottom)
+                            
                             Button(action: {
                                 if showAnswer {
-                                    generateQuestion()
+                                    generateQuestion(withFontSize: thisCardFontSize)
                                     showAnswer = false
                                 } else {
                                     showAnswer.toggle()
@@ -117,8 +121,9 @@ struct PracticeFlashcardsView: View {
                             Spacer()
                         }
                         
+                        
                     }
-                    .frame(width: geometry.size.width * 0.95)
+                    .frame(width: geometry.size.width * 0.95, height: geometry.size.height * (isLandscape ? 0.9 : 0.5))
                     
                     Spacer()
                 }
@@ -126,13 +131,13 @@ struct PracticeFlashcardsView: View {
                 
             }
             .onAppear {
-                generateQuestion()
+                generateQuestion(withFontSize: thisCardFontSize)
             }
         }
     }
     
     
-    private func generateQuestion() {
+    private func generateQuestion(withFontSize thisCardFontSize: CGFloat) {
         var num1: Int
         var num2: Int
         
@@ -163,14 +168,15 @@ struct PracticeFlashcardsView: View {
             correctAnswer = num1 / num2
         }
         
-        answerContainerWidth = getWidthForAnswer(correctAnswer)
+        answerContainerWidth = getWidthForAnswer(correctAnswer, thisCardFontSize: thisCardFontSize)
+        
         
     }
     
-    private func getWidthForAnswer(_ answer: Int) -> CGFloat {
+    private func getWidthForAnswer(_ answer: Int, thisCardFontSize: CGFloat) -> CGFloat {
         // Calculate the width based on the number of digits in the answer
         let answerString = "\(answer)"
-        let font = UIFont.systemFont(ofSize: 42) // Use the appropriate font
+        let font = UIFont.systemFont(ofSize: thisCardFontSize)
         let fontAttributes = [NSAttributedString.Key.font: font]
         let size = (answerString as NSString).size(withAttributes: fontAttributes)
         

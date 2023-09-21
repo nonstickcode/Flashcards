@@ -30,12 +30,13 @@ struct TestFlashcardsView: View {
     @State private var playerName: String = ""
     @State private var score: Double = 0
     
-    @State var correctAnsweredFlashCards: Int = 0  // score of player in round
-    @State var incorrectAnsweredFlashCards: Int = 0 // score of player in round
+    @State var correctAnsweredFlashCards: Int = 0
+    @State var incorrectAnsweredFlashCards: Int = 0
     
     
     var body: some View {
         GeometryReader { geometry in
+            
             ScrollView(.vertical, showsIndicators: false) {
                 VStack {
                     Text("\(operation.rawValue)")
@@ -53,7 +54,7 @@ struct TestFlashcardsView: View {
                         FlashNoteCard {
                             VStack {
                                 Text("\(question) = ?")
-                                    .font(.system(size: 42))
+                                    .font(.system(size: 50))
                                     .foregroundColor(.white)
                                     .bold()
                                     .padding()
@@ -62,7 +63,7 @@ struct TestFlashcardsView: View {
                                     .textFieldStyle(RoundedBorderTextFieldStyle())
                                     .keyboardType(.numberPad)
                                     .frame(width: 150)
-                                    .padding(.horizontal)
+                                    .padding()
                                     .focused($textFieldFocus)
                                 
                                 Button(action: {
@@ -79,7 +80,7 @@ struct TestFlashcardsView: View {
                                 Spacer()
                             }
                         }
-                        .frame(width: geometry.size.width * 0.8)
+                        .frame(width: geometry.size.width * 0.95, height: 300)
                         .overlay(
                             Group {
                                 
@@ -88,7 +89,7 @@ struct TestFlashcardsView: View {
                                 if showCorrectAnswerOverlay {
                                     ZStack {
                                         RoundedRectangle(cornerRadius: 25)
-                                            .frame(width: geometry.size.width * 0.8, height: 250)
+                                            .frame(width: geometry.size.width * 0.95, height: 300)
                                             .foregroundColor(Color.green.opacity(0.98))
                                         VStack {
                                             Text("Correct!")
@@ -118,7 +119,7 @@ struct TestFlashcardsView: View {
                                 if showIncorrectAnswerOverlay {
                                     ZStack {
                                         RoundedRectangle(cornerRadius: 25)
-                                            .frame(width: geometry.size.width * 0.8, height: 250)
+                                            .frame(width: geometry.size.width * 0.95, height: 300)
                                             .foregroundColor(Color.red.opacity(0.98))
                                         VStack {
                                             Text("Incorrect.")
