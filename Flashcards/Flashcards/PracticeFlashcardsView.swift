@@ -25,8 +25,12 @@ struct PracticeFlashcardsView: View {
     
     @State private var answerContainerWidth: CGFloat = 0
     
-    
     @State private var arrowOffset: CGFloat = 0
+    
+    
+    
+    @State private var topRange: Int = 20
+    @State private var bottomRange: Int = 0
     
     
     var body: some View {
@@ -78,7 +82,8 @@ struct PracticeFlashcardsView: View {
                             
                             Button(action: {
                                 if showAnswer {
-                                    generateQuestion(withFontSize: thisCardFontSize)
+                                    generateQuestion()
+                                    getWidthForAnswer(correctAnswer, thisCardFontSize: thisCardFontSize)
                                     showAnswer = false
                                 } else {
                                     showAnswer.toggle()
@@ -131,56 +136,63 @@ struct PracticeFlashcardsView: View {
                 
             }
             .onAppear {
-                generateQuestion(withFontSize: thisCardFontSize)
+                generateQuestion()
+                getWidthForAnswer(correctAnswer, thisCardFontSize: thisCardFontSize)
             }
         }
     }
     
     
-    private func generateQuestion(withFontSize thisCardFontSize: CGFloat) {
+    private func generateQuestion() {
         var num1: Int
         var num2: Int
-        
+
         switch operation {
         case .addition:
-            num1 = Int.random(in: 1...10)
-            num2 = Int.random(in: 1...10)
+            num1 = Int.random(in: bottomRange...topRange)
+            num2 = Int.random(in: bottomRange...topRange)
             question = "\(num1) + \(num2)"
             correctAnswer = num1 + num2
+
         case .subtraction:
-            num1 = Int.random(in: 1...10)
-            num2 = Int.random(in: 1...10)
+            num1 = Int.random(in: bottomRange...topRange)
+            num2 = Int.random(in: bottomRange...topRange)
             if num2 > num1 {
                 swap(&num1, &num2)
             }
             question = "\(num1) - \(num2)"
             correctAnswer = num1 - num2
+
         case .multiplication:
-            num1 = Int.random(in: 1...10)
-            num2 = Int.random(in: 1...10)
+            num1 = Int.random(in: bottomRange...topRange)
+            num2 = Int.random(in: bottomRange...topRange)
             question = "\(num1) × \(num2)"
             correctAnswer = num1 * num2
+
         case .division:
-            num2 = Int.random(in: 1...10)
-            let multiplier = Int.random(in: 1...10)
+            num2 = Int.random(in: bottomRange...topRange)
+            // Make sure num2 is not zero before proceeding
+            while num2 == 0 {
+                num2 = Int.random(in: bottomRange...topRange)
+            }
+            let multiplier = Int.random(in: bottomRange...topRange)
             num1 = num2 * multiplier
             question = "\(num1) / \(num2)"
             correctAnswer = num1 / num2
         }
         
-        answerContainerWidth = getWidthForAnswer(correctAnswer, thisCardFontSize: thisCardFontSize)
-        
         
     }
+
     
-    private func getWidthForAnswer(_ answer: Int, thisCardFontSize: CGFloat) -> CGFloat {
+    private func getWidthForAnswer(_ answer: Int, thisCardFontSize: CGFloat) {
         // Calculate the width based on the number of digits in the answer
         let answerString = "\(answer)"
         let font = UIFont.systemFont(ofSize: thisCardFontSize)
         let fontAttributes = [NSAttributedString.Key.font: font]
         let size = (answerString as NSString).size(withAttributes: fontAttributes)
         
-        return size.width
+        answerContainerWidth = size.width
     }
     
     
