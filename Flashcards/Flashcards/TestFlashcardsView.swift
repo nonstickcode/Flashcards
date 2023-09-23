@@ -40,269 +40,87 @@ struct TestFlashcardsView: View {
             let isLandscape = geometry.size.width > 500 // landscape or larger like tablet
             let thisCardFontSize: CGFloat = isLandscape ? 60 : 50
             
-            if isLandscape {
+            
+            
+            VStack {
+                Spacer()
                 
-                
-                VStack {
-                    HStack {
-                        Text("Correct: \(correctAnsweredFlashCards)")
-                            .foregroundColor(.green)
-                        Spacer()
-                            .frame(width: geometry.size.width * 0.05)
-                        Text("Incorrect: \(incorrectAnsweredFlashCards)")
-                            .foregroundColor(.red)
-                    }
-                    .padding(.bottom, 0)
+                if isLandscape {
                     
                     
-                    HStack {
-                        
-                        
-                        VStack {
-                            ForEach(0..<5) { num in
-                                Button(action: {
-                                    self.userAnswer += "\(num)"
-                                }) {
-                                    Spacer()
-                                    Text("\(num)")
-                                        .frame(minWidth: 70, minHeight: 50)
-                                        .background(Color.orange.opacity(0.4).gradient)
-                                        .foregroundColor(.black)
-                                        .bold()
-                                        .cornerRadius(8)
-                                    Spacer()
-                                    
-                                }
-                                .padding(0)
-                            }
-                            
-                        }
-                        
-                        FlashNoteCard {
-                            VStack {
-                                Text("\(question) = ?")
-                                    .font(.system(size: thisCardFontSize))
-                                    .foregroundColor(.white)
-                                    .bold()
-                                    .padding(.top)
-                                
-                                HStack {
-                                    Spacer()
-                                    TextField("Answer here", text: $userAnswer)
-                                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                                        .frame(width: 150)
-                                        .padding(.bottom)
-                                    
-                                    Spacer()
-                                        .frame(width: 10)
-                                    
-                                    Button(action: {
-                                        self.userAnswer = ""
-                                    }) {
-                                        
-                                        Image(systemName: "delete.left")
-                                            .resizable()
-                                            .frame(width: 32, height: 32)
-                                            .foregroundColor(.red)
-                                            .padding(.bottom)
-                                    }
-                                    .buttonStyle(PlainButtonStyle())
-                                    
-                                    Spacer()
-                                }
-                                
-                                Button(action: {
-                                    checkAnswer()
-                                }) {
-                                    Text("Check Answer")
-                                        .frame(width: geometry.size.width * 0.6, height: 60)
-                                        .background(Color.blue)
-                                        .foregroundColor(.white)
-                                        .cornerRadius(10)
-                                        .padding()
-                                }
-                                
-                                Spacer()
-                            }
-                        }
-                        .frame(width: geometry.size.width * 0.75, height: 300)
-                        .overlay(
-                            Group {
-                                
-                                // CORRECT OVERLAY -------------------
-                                
-                                if showCorrectAnswerOverlay {
-                                    ZStack {
-                                        RoundedRectangle(cornerRadius: 25)
-                                            .frame(width: geometry.size.width * 0.75, height: 300)
-                                            .foregroundColor(Color.green.opacity(0.98))
-                                        VStack {
-                                            Text("Correct!")
-                                                .font(.largeTitle)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                                .padding()
-                                            
-                                            Text("Great Job!")
-                                                .font(.title)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                                .padding()
-                                        }
-                                    }
-                                    .onAppear {
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-                                            showCorrectAnswerOverlay = false
-                                        }
-                                    }
-                                }
-                                
-                                // -------------------------------------
-                                
-                                // INCORRECT OVERLAY -------------------
-                                
-                                if showIncorrectAnswerOverlay {
-                                    ZStack {
-                                        RoundedRectangle(cornerRadius: 25)
-                                            .frame(width: geometry.size.width * 0.75, height: 300)
-                                            .foregroundColor(Color.red.opacity(0.98))
-                                        VStack {
-                                            Text("Incorrect.")
-                                                .font(.largeTitle)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                                .padding()
-                                            
-                                            Text("Try Again.")
-                                                .font(.title)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                                .padding()
-                                        }
-                                    }
-                                    .onAppear {
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-                                            showIncorrectAnswerOverlay = false
-                                        }
-                                    }
-                                }
-                                
-                                // -------------------------------------
-                                
-                                
-                            }
-                        )
-                        
-                        
-                        VStack {
-                            ForEach(5..<10) { num in
-                                Button(action: {
-                                    self.userAnswer += "\(num)"
-                                }) {
-                                    Spacer()
-                                    Text("\(num)")
-                                        .frame(minWidth: 70, minHeight: 50)
-                                        .background(Color.orange.opacity(0.4).gradient)
-                                        .foregroundColor(.black)
-                                        .bold()
-                                        .cornerRadius(8)
-                                    Spacer()
-                                }
-                                .padding(0)
-                            }
-                        }
-                        
-                        // Fill leftover space
-                    }
-                }
-                .onAppear {
-                    generateQuestion()
-                    
-                }
-                .overlay(
-                    Group {
-                        if showCustomNameEntryAlert {
-                            VStack {
-                                Text("Congratulations!")
-                                    .font(.title)
-                                    .foregroundColor(.white)
-                                    .padding(10)
-                                Text("You've answered 5 questions correctly.")
-                                    .foregroundColor(.white)
-                                    .padding(5)
-                                Text("Your score: \(score)")
-                                    .foregroundColor(.white)
-                                    .padding(5)
-                                Text("Enter your name below:")
-                                    .foregroundColor(.white)
-                                    .padding(5)
-                                
-                                TextField("Name", text: $playerName)
-                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                                    .padding(.horizontal, 20)
-                                    .padding(10)
-                                    .keyboardType(.alphabet)
-                                Button(action: {
-                                    savePlayerScore()
-                                    resetGame()
-                                    showCustomNameEntryAlert = false
-                                }) {
-                                    Text("OK")
-                                        .frame(width: geometry.size.width * 0.4, height: 50)
-                                }
-                                .background(Color.white)
-                                .cornerRadius(10)
-                                .shadow(radius: 20)
-                                .bold()
-                                .padding(10)
-                                
-                                
-                            }
-                            .frame(width: geometry.size.width * 0.85, height: 375)
-                            .background(Color.blue.gradient)
-                            .cornerRadius(10)
-                            .shadow(radius: 20)
-                            .onAppear {
-                                calculateScore()
-                            }
-                            
-                            Spacer()
-                        }
-                        
-                    }
-                )
-                
-                
-            } else {
-                
-                ScrollView(.vertical, showsIndicators: false) {
                     VStack {
-                        Text("\(operation.rawValue)")
-                            .font(.title)
-                            .bold()
-                            .padding(.top, 10)
-                        Text("Correct: \(correctAnsweredFlashCards)")
-                            .foregroundColor(.green)
-                        Text("Incorrect: \(incorrectAnsweredFlashCards)")
-                            .foregroundColor(.red)
+                        HStack {
+                            Text("Correct: \(correctAnsweredFlashCards)")
+                                .foregroundColor(.green)
+                            Spacer()
+                                .frame(width: geometry.size.width * 0.05)
+                            Text("Incorrect: \(incorrectAnsweredFlashCards)")
+                                .foregroundColor(.red)
+                        }
+                        .padding(.bottom, 0)
                         
                         
                         HStack {
-                            Spacer()
+                            
+                            
+                            VStack {
+                                ForEach(0..<5) { num in
+                                    Button(action: {
+                                        self.userAnswer += "\(num)"
+                                    }) {
+                                        Spacer()
+                                        Rectangle()
+                                            .frame(width: 70, height: 51)
+                                            .background(.gray.opacity(0.5))
+                                            .clipShape(.rect(cornerRadius: 8))
+                                            .overlay(
+                                                
+                                                Text("\(num)")
+                                                    .frame(width: 65, height: 46)
+                                                    .background(Color.white.gradient)
+                                                    .foregroundColor(.black)
+                                                    .bold()
+                                                    .cornerRadius(8)
+                                            )
+                                        Spacer()
+                                    }
+                                    .padding(0)
+                                }
+                                
+                            }
+                            
                             FlashNoteCard {
                                 VStack {
                                     Text("\(question) = ?")
                                         .font(.system(size: thisCardFontSize))
                                         .foregroundColor(.white)
                                         .bold()
-                                        .padding()
+                                        .padding(.top)
                                     
-                                    TextField("Answer here", text: $userAnswer)
-                                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                                        .keyboardType(.numberPad)
-                                        .frame(width: 150)
-                                        .padding()
-                                        .focused($textFieldFocus)
+                                    HStack {
+                                        Spacer()
+                                        TextField("Answer here", text: $userAnswer)
+                                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                                            .frame(width: 150)
+                                            .padding(.bottom)
+                                        
+                                        Spacer()
+                                            .frame(width: 20)
+                                        
+                                        Button(action: {
+                                            self.userAnswer = ""
+                                        }) {
+                                            
+                                            Image(systemName: "clear")
+                                                .resizable()
+                                                .frame(width: 32, height: 32)
+                                                .foregroundColor(.red)
+                                                .padding(.bottom)
+                                        }
+                                        .buttonStyle(PlainButtonStyle())
+                                        
+                                        Spacer()
+                                    }
                                     
                                     Button(action: {
                                         checkAnswer()
@@ -318,7 +136,7 @@ struct TestFlashcardsView: View {
                                     Spacer()
                                 }
                             }
-                            .frame(width: geometry.size.width * 0.95, height: 300)
+                            .frame(width: geometry.size.width * 0.75, height: 300)
                             .overlay(
                                 Group {
                                     
@@ -327,7 +145,7 @@ struct TestFlashcardsView: View {
                                     if showCorrectAnswerOverlay {
                                         ZStack {
                                             RoundedRectangle(cornerRadius: 25)
-                                                .frame(width: geometry.size.width * 0.95, height: 300)
+                                                .frame(width: geometry.size.width * 0.75, height: 300)
                                                 .foregroundColor(Color.green.opacity(0.98))
                                             VStack {
                                                 Text("Correct!")
@@ -357,7 +175,7 @@ struct TestFlashcardsView: View {
                                     if showIncorrectAnswerOverlay {
                                         ZStack {
                                             RoundedRectangle(cornerRadius: 25)
-                                                .frame(width: geometry.size.width * 0.95, height: 300)
+                                                .frame(width: geometry.size.width * 0.75, height: 300)
                                                 .foregroundColor(Color.red.opacity(0.98))
                                             VStack {
                                                 Text("Incorrect.")
@@ -385,13 +203,35 @@ struct TestFlashcardsView: View {
                                     
                                 }
                             )
-                            Spacer()
+                            
+                            
+                            VStack {
+                                ForEach(5..<10) { num in
+                                    Button(action: {
+                                        self.userAnswer += "\(num)"
+                                    }) {
+                                        Spacer()
+                                        Rectangle()
+                                            .frame(width: 70, height: 51)
+                                            .background(.gray.opacity(0.5))
+                                            .clipShape(.rect(cornerRadius: 8))
+                                            .overlay(
+                                                
+                                                Text("\(num)")
+                                                    .frame(width: 65, height: 46)
+                                                    .background(Color.white.gradient)
+                                                    .foregroundColor(.black)
+                                                    .bold()
+                                                    .cornerRadius(8)
+                                            )
+                                        Spacer()
+                                    }
+                                    .padding(0)
+                                }
+                            }
+                            
+                            // Fill leftover space
                         }
-                        
-                    }
-                    .onAppear {
-                        generateQuestion()
-                        textFieldFocus = true
                     }
                     .overlay(
                         Group {
@@ -445,8 +285,186 @@ struct TestFlashcardsView: View {
                             
                         }
                     )
+                    
+                    
+                } else {
+                    
+                    ScrollView(.vertical, showsIndicators: false) {
+                        VStack {
+                            Text("\(operation.rawValue)")
+                                .font(.title)
+                                .bold()
+                                .padding(.top, 10)
+                            Text("Correct: \(correctAnsweredFlashCards)")
+                                .foregroundColor(.green)
+                            Text("Incorrect: \(incorrectAnsweredFlashCards)")
+                                .foregroundColor(.red)
+                            
+                            
+                            HStack {
+                                Spacer()
+                                FlashNoteCard {
+                                    VStack {
+                                        Text("\(question) = ?")
+                                            .font(.system(size: thisCardFontSize))
+                                            .foregroundColor(.white)
+                                            .bold()
+                                            .padding()
+                                        
+                                        TextField("Answer here", text: $userAnswer)
+                                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                                            .keyboardType(.numberPad)
+                                            .frame(width: 150)
+                                            .padding()
+                                            .focused($textFieldFocus)
+                                        
+                                        Button(action: {
+                                            checkAnswer()
+                                        }) {
+                                            Text("Check Answer")
+                                                .frame(width: geometry.size.width * 0.6, height: 60)
+                                                .background(Color.blue)
+                                                .foregroundColor(.white)
+                                                .cornerRadius(10)
+                                                .padding()
+                                        }
+                                        
+                                        Spacer()
+                                    }
+                                }
+                                .frame(width: geometry.size.width * 0.95, height: 300)
+                                .overlay(
+                                    Group {
+                                        
+                                        // CORRECT OVERLAY -------------------
+                                        
+                                        if showCorrectAnswerOverlay {
+                                            ZStack {
+                                                RoundedRectangle(cornerRadius: 25)
+                                                    .frame(width: geometry.size.width * 0.95, height: 300)
+                                                    .foregroundColor(Color.green.opacity(0.98))
+                                                VStack {
+                                                    Text("Correct!")
+                                                        .font(.largeTitle)
+                                                        .bold()
+                                                        .foregroundColor(.white)
+                                                        .padding()
+                                                    
+                                                    Text("Great Job!")
+                                                        .font(.title)
+                                                        .bold()
+                                                        .foregroundColor(.white)
+                                                        .padding()
+                                                }
+                                            }
+                                            .onAppear {
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                                                    showCorrectAnswerOverlay = false
+                                                }
+                                            }
+                                        }
+                                        
+                                        // -------------------------------------
+                                        
+                                        // INCORRECT OVERLAY -------------------
+                                        
+                                        if showIncorrectAnswerOverlay {
+                                            ZStack {
+                                                RoundedRectangle(cornerRadius: 25)
+                                                    .frame(width: geometry.size.width * 0.95, height: 300)
+                                                    .foregroundColor(Color.red.opacity(0.98))
+                                                VStack {
+                                                    Text("Incorrect.")
+                                                        .font(.largeTitle)
+                                                        .bold()
+                                                        .foregroundColor(.white)
+                                                        .padding()
+                                                    
+                                                    Text("Try Again.")
+                                                        .font(.title)
+                                                        .bold()
+                                                        .foregroundColor(.white)
+                                                        .padding()
+                                                }
+                                            }
+                                            .onAppear {
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                                                    showIncorrectAnswerOverlay = false
+                                                }
+                                            }
+                                        }
+                                        
+                                        // -------------------------------------
+                                        
+                                        
+                                    }
+                                )
+                                Spacer()
+                            }
+                            
+                        }
+                        .onAppear {
+                            textFieldFocus = true
+                        }
+                        .overlay(
+                            Group {
+                                if showCustomNameEntryAlert {
+                                    VStack {
+                                        Text("Congratulations!")
+                                            .font(.title)
+                                            .foregroundColor(.white)
+                                            .padding(10)
+                                        Text("You've answered 5 questions correctly.")
+                                            .foregroundColor(.white)
+                                            .padding(5)
+                                        Text("Your score: \(score)")
+                                            .foregroundColor(.white)
+                                            .padding(5)
+                                        Text("Enter your name below:")
+                                            .foregroundColor(.white)
+                                            .padding(5)
+                                        
+                                        TextField("Name", text: $playerName)
+                                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                                            .padding(.horizontal, 20)
+                                            .padding(10)
+                                            .keyboardType(.alphabet)
+                                        Button(action: {
+                                            savePlayerScore()
+                                            resetGame()
+                                            showCustomNameEntryAlert = false
+                                        }) {
+                                            Text("OK")
+                                                .frame(width: geometry.size.width * 0.4, height: 50)
+                                        }
+                                        .background(Color.white)
+                                        .cornerRadius(10)
+                                        .shadow(radius: 20)
+                                        .bold()
+                                        .padding(10)
+                                        
+                                        
+                                    }
+                                    .frame(width: geometry.size.width * 0.85, height: 375)
+                                    .background(Color.blue.gradient)
+                                    .cornerRadius(10)
+                                    .shadow(radius: 20)
+                                    .onAppear {
+                                        calculateScore()
+                                    }
+                                    
+                                    Spacer()
+                                }
+                                
+                            }
+                        )
+                    }
                 }
-            } // end of else
+                Spacer()
+            }
+            .onAppear(){
+                generateQuestion()
+            }
         }
     }
     
