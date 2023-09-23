@@ -37,7 +37,7 @@ struct TestFlashcardsView: View {
     var body: some View {
         GeometryReader { geometry in
             
-            let isLandscape = geometry.size.width > geometry.size.height
+            let isLandscape = geometry.size.width > 500 // landscape or larger like tablet
             let thisCardFontSize: CGFloat = isLandscape ? 60 : 50
             
             if isLandscape {
@@ -56,20 +56,22 @@ struct TestFlashcardsView: View {
                     
                     
                     HStack {
-                        Spacer() // Fill leftover space
+                        
                         
                         VStack {
                             ForEach(0..<5) { num in
                                 Button(action: {
                                     self.userAnswer += "\(num)"
                                 }) {
+                                    Spacer()
                                     Text("\(num)")
-                                        .frame(minWidth: 80, minHeight: 50)
-                                        .background(Color.yellow.gradient)
+                                        .frame(minWidth: 70, minHeight: 50)
+                                        .background(Color.orange.opacity(0.4).gradient)
                                         .foregroundColor(.black)
                                         .bold()
                                         .cornerRadius(8)
-                                        
+                                    Spacer()
+                                    
                                 }
                                 .padding(0)
                             }
@@ -84,11 +86,30 @@ struct TestFlashcardsView: View {
                                     .bold()
                                     .padding(.top)
                                 
-                                TextField("Answer here", text: $userAnswer)
-                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                                    .frame(width: 150)
-                                    .padding(.bottom)
+                                HStack {
+                                    Spacer()
+                                    TextField("Answer here", text: $userAnswer)
+                                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                                        .frame(width: 150)
+                                        .padding(.bottom)
                                     
+                                    Spacer()
+                                        .frame(width: 10)
+                                    
+                                    Button(action: {
+                                        self.userAnswer = ""
+                                    }) {
+                                        
+                                        Image(systemName: "delete.left")
+                                            .resizable()
+                                            .frame(width: 32, height: 32)
+                                            .foregroundColor(.red)
+                                            .padding(.bottom)
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                    
+                                    Spacer()
+                                }
                                 
                                 Button(action: {
                                     checkAnswer()
@@ -178,18 +199,20 @@ struct TestFlashcardsView: View {
                                 Button(action: {
                                     self.userAnswer += "\(num)"
                                 }) {
+                                    Spacer()
                                     Text("\(num)")
-                                        .frame(minWidth: 80, minHeight: 50)
-                                        .background(Color.yellow.gradient)
+                                        .frame(minWidth: 70, minHeight: 50)
+                                        .background(Color.orange.opacity(0.4).gradient)
                                         .foregroundColor(.black)
                                         .bold()
                                         .cornerRadius(8)
+                                    Spacer()
                                 }
                                 .padding(0)
                             }
                         }
                         
-                        Spacer() // Fill leftover space
+                        // Fill leftover space
                     }
                 }
                 .onAppear {
