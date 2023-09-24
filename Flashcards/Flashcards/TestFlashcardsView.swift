@@ -87,7 +87,7 @@ struct TestFlashcardsView: View {
     
     @State private var rectangleWidth: CGFloat = 1
     @State private var rectangleHeight: CGFloat = 1
-
+    
     
     
     var body: some View {
@@ -105,15 +105,7 @@ struct TestFlashcardsView: View {
                     
                     
                     VStack {
-                        HStack {
-                            Text("Correct: \(correctAnsweredFlashCards)")
-                                .foregroundColor(.green)
-                            Spacer()
-                                .frame(width: geometry.size.width * 0.05)
-                            Text("Incorrect: \(incorrectAnsweredFlashCards)")
-                                .foregroundColor(.red)
-                        }
-                        .padding(.bottom, 0)
+                        
                         
                         
                         HStack {
@@ -148,18 +140,39 @@ struct TestFlashcardsView: View {
                             
                             FlashNoteCard {
                                 VStack {
+                                    HStack {
+                                        Spacer()
+                                       
+                                        HStack{
+                                            Text("\(correctAnsweredFlashCards)")
+                                                .foregroundColor(.green)
+                                                .padding(.leading, 25)
+                                            Text(" / ")
+                                                .foregroundColor(.white)
+                                            Text("\(incorrectAnsweredFlashCards)")
+                                                .foregroundColor(.red)
+                                                .padding(.trailing, 25)
+                                        }
+                                        .border(Color.gray, width: 2)
+                                        Spacer()
+                                    }
+                                    
+                                    
+                                    
                                     Text("\(question) = ?")
                                         .font(.system(size: thisCardFontSize))
                                         .foregroundColor(.white)
                                         .bold()
-                                        .padding(.top)
+                                    
+                                    
+                                    
                                     
                                     HStack {
                                         Spacer()
                                         TextField("Answer here", text: $userAnswer)
                                             .textFieldStyle(RoundedBorderTextFieldStyle())
                                             .frame(width: 150)
-                                            .padding(.bottom)
+                                        
                                         
                                         Spacer()
                                             .frame(width: 20)
@@ -172,12 +185,15 @@ struct TestFlashcardsView: View {
                                                 .resizable()
                                                 .frame(width: 32, height: 32)
                                                 .foregroundColor(.red)
-                                                .padding(.bottom)
+                                            
                                         }
                                         .buttonStyle(PlainButtonStyle())
                                         
                                         Spacer()
                                     }
+                                    .padding(.bottom, 25)
+                                    
+                                    
                                     
                                     Button(action: {
                                         checkAnswer()
@@ -187,10 +203,10 @@ struct TestFlashcardsView: View {
                                             .background(Color.blue)
                                             .foregroundColor(.white)
                                             .cornerRadius(10)
-                                            .padding()
+                                        
                                     }
                                     
-                                    Spacer()
+                                    
                                 }
                             }
                             .frame(width: rectangleWidth, height: rectangleHeight)
@@ -213,7 +229,7 @@ struct TestFlashcardsView: View {
                                     }
                                 }
                             )
-
+                            
                             
                             
                             VStack {
@@ -366,7 +382,7 @@ struct TestFlashcardsView: View {
                                         }
                                     }
                                 )
-
+                                
                                 Spacer()
                             }
                             
@@ -375,7 +391,7 @@ struct TestFlashcardsView: View {
                             textFieldFocus = true
                             
                             rectangleWidth = isLandscape ? geometry.size.width * 0.75 : geometry.size.width * 0.95
-                            rectangleHeight = isLandscape ? 300 : 300
+                            rectangleHeight = isLandscape ? 340 : 300
                         }
                         .overlay(
                             Group {
