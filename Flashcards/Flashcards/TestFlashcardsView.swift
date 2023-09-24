@@ -8,6 +8,47 @@
 import SwiftUI
 import SwiftData
 
+
+struct AnswerOverlayView: View {
+    let text1: String
+    let text2: String
+    let color: Color
+    let overlayWidth: CGFloat
+    let overlayHeight: CGFloat
+    
+    init(text1: String, text2: String, color: Color, overlayWidth: CGFloat, overlayHeight: CGFloat) {
+        self.text1 = text1
+        self.text2 = text2
+        self.color = color
+        self.overlayWidth = overlayWidth
+        self.overlayHeight = overlayHeight
+    }
+    
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 25)
+                .foregroundColor(color.opacity(0.98))
+                .frame(width: overlayWidth, height: overlayHeight)
+            VStack {
+                Text(text1)
+                    .font(.largeTitle)
+                    .bold()
+                    .foregroundColor(.white)
+                    .padding()
+                
+                Text(text2)
+                    .font(.title)
+                    .bold()
+                    .foregroundColor(.white)
+                    .padding()
+            }
+        }
+    }
+}
+
+
+
+
 struct TestFlashcardsView: View {
     
     @Environment(\.modelContext) private var modelContext
@@ -33,60 +74,10 @@ struct TestFlashcardsView: View {
     @State var correctAnsweredFlashCards: Int = 0
     @State var incorrectAnsweredFlashCards: Int = 0
     
-    
-    
-    
-    struct AnswerOverlayView: View {
-        let text1: String
-        let text2: String
-        let color: Color
-        let overlayWidth: CGFloat
-        let overlayHeight: CGFloat
-        
-        init(text1: String, text2: String, color: Color, overlayWidth: CGFloat, overlayHeight: CGFloat) {
-            self.text1 = text1
-            self.text2 = text2
-            self.color = color
-            self.overlayWidth = overlayWidth
-            self.overlayHeight = overlayHeight
-        }
-        
-        var body: some View {
-            ZStack {
-                RoundedRectangle(cornerRadius: 25)
-                    .foregroundColor(color.opacity(0.98))
-                    .frame(width: overlayWidth, height: overlayHeight)
-                VStack {
-                    Text(text1)
-                        .font(.largeTitle)
-                        .bold()
-                        .foregroundColor(.white)
-                        .padding()
-                    
-                    Text(text2)
-                        .font(.title)
-                        .bold()
-                        .foregroundColor(.white)
-                        .padding()
-                }
-            }
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     @State private var rectangleWidth: CGFloat = 1
     @State private var rectangleHeight: CGFloat = 1
+    
+    
     
     
     
