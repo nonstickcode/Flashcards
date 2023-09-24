@@ -127,12 +127,13 @@ struct TestFlashcardsView: View {
                                         Spacer()
                                         Rectangle()
                                             .frame(width: 70, height: 51)
-                                            .background(.gray.opacity(0.5))
-                                            .clipShape(.rect(cornerRadius: 8))
+                                            .foregroundColor(.clear)
+                                            .background(.gray.gradient)
+                                            .cornerRadius(10)
                                             .overlay(
                                                 
                                                 Text("\(num)")
-                                                    .frame(width: 65, height: 46)
+                                                    .frame(width: 64, height: 45)
                                                     .background(Color.white.gradient)
                                                     .foregroundColor(.black)
                                                     .bold()
@@ -223,12 +224,13 @@ struct TestFlashcardsView: View {
                                         Spacer()
                                         Rectangle()
                                             .frame(width: 70, height: 51)
-                                            .background(.gray.opacity(0.5))
-                                            .clipShape(.rect(cornerRadius: 8))
+                                            .foregroundColor(.clear)
+                                            .background(.gray.gradient)
+                                            .cornerRadius(10)
                                             .overlay(
                                                 
                                                 Text("\(num)")
-                                                    .frame(width: 65, height: 46)
+                                                    .frame(width: 64, height: 45)
                                                     .background(Color.white.gradient)
                                                     .foregroundColor(.black)
                                                     .bold()
