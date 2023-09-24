@@ -34,6 +34,62 @@ struct TestFlashcardsView: View {
     @State var incorrectAnsweredFlashCards: Int = 0
     
     
+    
+    
+    struct AnswerOverlayView: View {
+        let text1: String
+        let text2: String
+        let color: Color
+        let overlayWidth: CGFloat
+        let overlayHeight: CGFloat
+        
+        init(text1: String, text2: String, color: Color, overlayWidth: CGFloat, overlayHeight: CGFloat) {
+            self.text1 = text1
+            self.text2 = text2
+            self.color = color
+            self.overlayWidth = overlayWidth
+            self.overlayHeight = overlayHeight
+        }
+        
+        var body: some View {
+            ZStack {
+                RoundedRectangle(cornerRadius: 25)
+                    .foregroundColor(color.opacity(0.98))
+                    .frame(width: overlayWidth, height: overlayHeight)
+                VStack {
+                    Text(text1)
+                        .font(.largeTitle)
+                        .bold()
+                        .foregroundColor(.white)
+                        .padding()
+                    
+                    Text(text2)
+                        .font(.title)
+                        .bold()
+                        .foregroundColor(.white)
+                        .padding()
+                }
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    @State private var rectangleWidth: CGFloat = 1
+    @State private var rectangleHeight: CGFloat = 1
+
+    
+    
     var body: some View {
         GeometryReader { geometry in
             
@@ -136,73 +192,27 @@ struct TestFlashcardsView: View {
                                     Spacer()
                                 }
                             }
-                            .frame(width: geometry.size.width * 0.75, height: 300)
+                            .frame(width: rectangleWidth, height: rectangleHeight)
                             .overlay(
                                 Group {
-                                    
-                                    // CORRECT OVERLAY -------------------
-                                    
                                     if showCorrectAnswerOverlay {
-                                        ZStack {
-                                            RoundedRectangle(cornerRadius: 25)
-                                                .frame(width: geometry.size.width * 0.75, height: 300)
-                                                .foregroundColor(Color.green.opacity(0.98))
-                                            VStack {
-                                                Text("Correct!")
-                                                    .font(.largeTitle)
-                                                    .bold()
-                                                    .foregroundColor(.white)
-                                                    .padding()
-                                                
-                                                Text("Great Job!")
-                                                    .font(.title)
-                                                    .bold()
-                                                    .foregroundColor(.white)
-                                                    .padding()
+                                        AnswerOverlayView(text1: "Correct!", text2: "Good Job", color: .green, overlayWidth: rectangleWidth, overlayHeight: rectangleHeight)
+                                            .onAppear {
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                                                    showCorrectAnswerOverlay = false
+                                                }
                                             }
-                                        }
-                                        .onAppear {
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-                                                showCorrectAnswerOverlay = false
+                                    } else if showIncorrectAnswerOverlay {
+                                        AnswerOverlayView(text1: "Incorrect", text2: "Try Again", color: .red, overlayWidth: rectangleWidth, overlayHeight: rectangleHeight)
+                                            .onAppear {
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                                                    showIncorrectAnswerOverlay = false
+                                                }
                                             }
-                                        }
                                     }
-                                    
-                                    // -------------------------------------
-                                    
-                                    // INCORRECT OVERLAY -------------------
-                                    
-                                    if showIncorrectAnswerOverlay {
-                                        ZStack {
-                                            RoundedRectangle(cornerRadius: 25)
-                                                .frame(width: geometry.size.width * 0.75, height: 300)
-                                                .foregroundColor(Color.red.opacity(0.98))
-                                            VStack {
-                                                Text("Incorrect.")
-                                                    .font(.largeTitle)
-                                                    .bold()
-                                                    .foregroundColor(.white)
-                                                    .padding()
-                                                
-                                                Text("Try Again.")
-                                                    .font(.title)
-                                                    .bold()
-                                                    .foregroundColor(.white)
-                                                    .padding()
-                                            }
-                                        }
-                                        .onAppear {
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-                                                showIncorrectAnswerOverlay = false
-                                            }
-                                        }
-                                    }
-                                    
-                                    // -------------------------------------
-                                    
-                                    
                                 }
                             )
+
                             
                             
                             VStack {
@@ -229,9 +239,11 @@ struct TestFlashcardsView: View {
                                     .padding(0)
                                 }
                             }
-                            
-                            // Fill leftover space
                         }
+                    }
+                    .onAppear(){
+                        rectangleWidth = isLandscape ? geometry.size.width * 0.75 : geometry.size.width * 0.95
+                        rectangleHeight = isLandscape ? 300 : 300
                     }
                     .overlay(
                         Group {
@@ -332,79 +344,36 @@ struct TestFlashcardsView: View {
                                         Spacer()
                                     }
                                 }
-                                .frame(width: geometry.size.width * 0.95, height: 300)
+                                .frame(width: rectangleWidth, height: rectangleHeight)
                                 .overlay(
                                     Group {
-                                        
-                                        // CORRECT OVERLAY -------------------
-                                        
                                         if showCorrectAnswerOverlay {
-                                            ZStack {
-                                                RoundedRectangle(cornerRadius: 25)
-                                                    .frame(width: geometry.size.width * 0.95, height: 300)
-                                                    .foregroundColor(Color.green.opacity(0.98))
-                                                VStack {
-                                                    Text("Correct!")
-                                                        .font(.largeTitle)
-                                                        .bold()
-                                                        .foregroundColor(.white)
-                                                        .padding()
-                                                    
-                                                    Text("Great Job!")
-                                                        .font(.title)
-                                                        .bold()
-                                                        .foregroundColor(.white)
-                                                        .padding()
+                                            AnswerOverlayView(text1: "Correct!", text2: "Good Job", color: .green, overlayWidth: rectangleWidth, overlayHeight: rectangleHeight)
+                                                .onAppear {
+                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                                                        showCorrectAnswerOverlay = false
+                                                    }
                                                 }
-                                            }
-                                            .onAppear {
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-                                                    showCorrectAnswerOverlay = false
+                                        } else if showIncorrectAnswerOverlay {
+                                            AnswerOverlayView(text1: "Incorrect", text2: "Try Again", color: .red, overlayWidth: rectangleWidth, overlayHeight: rectangleHeight)
+                                                .onAppear {
+                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                                                        showIncorrectAnswerOverlay = false
+                                                    }
                                                 }
-                                            }
                                         }
-                                        
-                                        // -------------------------------------
-                                        
-                                        // INCORRECT OVERLAY -------------------
-                                        
-                                        if showIncorrectAnswerOverlay {
-                                            ZStack {
-                                                RoundedRectangle(cornerRadius: 25)
-                                                    .frame(width: geometry.size.width * 0.95, height: 300)
-                                                    .foregroundColor(Color.red.opacity(0.98))
-                                                VStack {
-                                                    Text("Incorrect.")
-                                                        .font(.largeTitle)
-                                                        .bold()
-                                                        .foregroundColor(.white)
-                                                        .padding()
-                                                    
-                                                    Text("Try Again.")
-                                                        .font(.title)
-                                                        .bold()
-                                                        .foregroundColor(.white)
-                                                        .padding()
-                                                }
-                                            }
-                                            .onAppear {
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-                                                    showIncorrectAnswerOverlay = false
-                                                }
-                                            }
-                                        }
-                                        
-                                        // -------------------------------------
-                                        
-                                        
                                     }
                                 )
+
                                 Spacer()
                             }
                             
                         }
                         .onAppear {
                             textFieldFocus = true
+                            
+                            rectangleWidth = isLandscape ? geometry.size.width * 0.75 : geometry.size.width * 0.95
+                            rectangleHeight = isLandscape ? 300 : 300
                         }
                         .overlay(
                             Group {
@@ -464,6 +433,9 @@ struct TestFlashcardsView: View {
             }
             .onAppear(){
                 generateQuestion()
+                
+                rectangleWidth = isLandscape ? geometry.size.width * 0.75 : geometry.size.width * 0.95
+                rectangleHeight = isLandscape ? 300 : 300
             }
         }
     }
