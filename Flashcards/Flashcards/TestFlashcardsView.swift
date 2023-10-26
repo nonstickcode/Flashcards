@@ -12,13 +12,15 @@ import SwiftData
 struct AnswerOverlayView: View {
     let text1: String
     let text2: String
+    let text3: String?
     let color: Color
     let overlayWidth: CGFloat
     let overlayHeight: CGFloat
     
-    init(text1: String, text2: String, color: Color, overlayWidth: CGFloat, overlayHeight: CGFloat) {
+    init(text1: String, text2: String, text3: String? = nil, color: Color, overlayWidth: CGFloat, overlayHeight: CGFloat) {
         self.text1 = text1
         self.text2 = text2
+        self.text3 = text3
         self.color = color
         self.overlayWidth = overlayWidth
         self.overlayHeight = overlayHeight
@@ -36,29 +38,41 @@ struct AnswerOverlayView: View {
                     .foregroundColor(.white)
                     .padding()
                 
-                Text(text2)
-                    .font(.title)
-                    .bold()
-                    .foregroundColor(.white)
-                    .padding()
+                if let text3 = text3 {
+                    Text(text2)
+                        .font(.title)
+                        .bold()
+                        .foregroundColor(.white)
+                        .padding()
+                    
+                    Text(text3)
+                        .font(.title)
+                        .bold()
+                        .foregroundColor(.white)
+                        .padding()
+                } else {
+                    Text(text2)
+                        .font(.title)
+                        .bold()
+                        .foregroundColor(.white)
+                        .padding()
+                }
             }
         }
     }
 }
-
-
-
 
 struct TestFlashcardsView: View {
     
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
     
-    
     var operation: MathOperation
     @State var question: String = ""
     @State var correctAnswer: Int = 0
     @State var userAnswer: String = ""
+    
+    @State var lastCorrectAnswer: String = "" // Variable to store the last correct answer
     
     // Alert related state variables
     @State private var showCorrectAnswerOverlay: Bool = false
@@ -77,31 +91,18 @@ struct TestFlashcardsView: View {
     @State private var rectangleWidth: CGFloat = 1
     @State private var rectangleHeight: CGFloat = 1
     
-    
-    
-    
-    
     var body: some View {
         GeometryReader { geometry in
             
-            let isLandscape = geometry.size.width > 500 // landscape or larger like tablet
+            let isLandscape = geometry.size.width > 500 // landscape or larger like a tablet
             let thisCardFontSize: CGFloat = isLandscape ? 60 : 50
-            
-            
             
             VStack {
                 Spacer()
                 
                 if isLandscape {
-                    
-                    
                     VStack {
-                        
-                        
-                        
                         HStack {
-                            
-                            
                             VStack {
                                 ForEach(0..<5) { num in
                                     Button(action: {
@@ -114,7 +115,6 @@ struct TestFlashcardsView: View {
                                             .background(.gray.gradient)
                                             .cornerRadius(10)
                                             .overlay(
-                                                
                                                 Text("\(num)")
                                                     .frame(width: 64, height: 45)
                                                     .background(Color.white.gradient)
@@ -126,14 +126,11 @@ struct TestFlashcardsView: View {
                                     }
                                     .padding(0)
                                 }
-                                
                             }
-                            
                             FlashNoteCard {
                                 VStack {
                                     HStack {
                                         Spacer()
-                                       
                                         HStack{
                                             Text("\(correctAnsweredFlashCards)")
                                                 .foregroundColor(.green)
@@ -147,45 +144,28 @@ struct TestFlashcardsView: View {
                                         .border(Color.gray, width: 2)
                                         Spacer()
                                     }
-                                    
-                                    
-                                    
                                     Text("\(question) = ?")
                                         .font(.system(size: thisCardFontSize))
                                         .foregroundColor(.white)
                                         .bold()
-                                    
-                                    
-                                    
-                                    
                                     HStack {
                                         Spacer()
                                         TextField("Answer here", text: $userAnswer)
                                             .textFieldStyle(RoundedBorderTextFieldStyle())
                                             .frame(width: 150)
-                                        
-                                        
-                                        Spacer()
-                                            .frame(width: 20)
-                                        
+                                        Spacer().frame(width: 20)
                                         Button(action: {
                                             self.userAnswer = ""
                                         }) {
-                                            
                                             Image(systemName: "clear")
                                                 .resizable()
                                                 .frame(width: 32, height: 32)
                                                 .foregroundColor(.red)
-                                            
                                         }
                                         .buttonStyle(PlainButtonStyle())
-                                        
                                         Spacer()
                                     }
                                     .padding(.bottom, 25)
-                                    
-                                    
-                                    
                                     Button(action: {
                                         checkAnswer()
                                     }) {
@@ -194,10 +174,7 @@ struct TestFlashcardsView: View {
                                             .background(Color.blue)
                                             .foregroundColor(.white)
                                             .cornerRadius(10)
-                                        
                                     }
-                                    
-                                    
                                 }
                             }
                             .frame(width: rectangleWidth, height: rectangleHeight)
@@ -211,7 +188,7 @@ struct TestFlashcardsView: View {
                                                 }
                                             }
                                     } else if showIncorrectAnswerOverlay {
-                                        AnswerOverlayView(text1: "Incorrect", text2: "Try Again", color: .red, overlayWidth: rectangleWidth, overlayHeight: rectangleHeight)
+                                        AnswerOverlayView(text1: "Incorrect", text2: "The correct answer was", text3: lastCorrectAnswer, color: .red, overlayWidth: rectangleWidth, overlayHeight: rectangleHeight)
                                             .onAppear {
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
                                                     showIncorrectAnswerOverlay = false
@@ -220,9 +197,6 @@ struct TestFlashcardsView: View {
                                     }
                                 }
                             )
-                            
-                            
-                            
                             VStack {
                                 ForEach(5..<10) { num in
                                     Button(action: {
@@ -235,7 +209,6 @@ struct TestFlashcardsView: View {
                                             .background(.gray.gradient)
                                             .cornerRadius(10)
                                             .overlay(
-                                                
                                                 Text("\(num)")
                                                     .frame(width: 64, height: 45)
                                                     .background(Color.white.gradient)
@@ -262,7 +235,7 @@ struct TestFlashcardsView: View {
                                         .font(.title)
                                         .foregroundColor(.white)
                                         .padding(10)
-                                    Text("You've answered 5 questions correctly.")
+                                    Text("You've answered 25 questions.")
                                         .foregroundColor(.white)
                                         .padding(5)
                                     Text("Your score: \(score)")
@@ -271,7 +244,6 @@ struct TestFlashcardsView: View {
                                     Text("Enter your name below:")
                                         .foregroundColor(.white)
                                         .padding(5)
-                                    
                                     TextField("Name", text: $playerName)
                                         .textFieldStyle(RoundedBorderTextFieldStyle())
                                         .padding(.horizontal, 20)
@@ -290,8 +262,6 @@ struct TestFlashcardsView: View {
                                     .shadow(radius: 20)
                                     .bold()
                                     .padding(10)
-                                    
-                                    
                                 }
                                 .frame(width: geometry.size.width * 0.85, height: 375)
                                 .background(Color.blue.gradient)
@@ -300,16 +270,11 @@ struct TestFlashcardsView: View {
                                 .onAppear {
                                     calculateScore()
                                 }
-                                
                                 Spacer()
                             }
-                            
                         }
                     )
-                    
-                    
                 } else {
-                    
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack {
                             Text("\(operation.rawValue)")
@@ -320,8 +285,6 @@ struct TestFlashcardsView: View {
                                 .foregroundColor(.green)
                             Text("Incorrect: \(incorrectAnsweredFlashCards)")
                                 .foregroundColor(.red)
-                            
-                            
                             HStack {
                                 Spacer()
                                 FlashNoteCard {
@@ -331,14 +294,12 @@ struct TestFlashcardsView: View {
                                             .foregroundColor(.white)
                                             .bold()
                                             .padding()
-                                        
                                         TextField("Answer here", text: $userAnswer)
                                             .textFieldStyle(RoundedBorderTextFieldStyle())
                                             .keyboardType(.numberPad)
                                             .frame(width: 150)
                                             .padding()
                                             .focused($textFieldFocus)
-                                        
                                         Button(action: {
                                             checkAnswer()
                                         }) {
@@ -349,7 +310,6 @@ struct TestFlashcardsView: View {
                                                 .cornerRadius(10)
                                                 .padding()
                                         }
-                                        
                                         Spacer()
                                     }
                                 }
@@ -364,7 +324,7 @@ struct TestFlashcardsView: View {
                                                     }
                                                 }
                                         } else if showIncorrectAnswerOverlay {
-                                            AnswerOverlayView(text1: "Incorrect", text2: "Try Again", color: .red, overlayWidth: rectangleWidth, overlayHeight: rectangleHeight)
+                                            AnswerOverlayView(text1: "Incorrect", text2: "The correct answer was", text3: lastCorrectAnswer, color: .red, overlayWidth: rectangleWidth, overlayHeight: rectangleHeight)
                                                 .onAppear {
                                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
                                                         showIncorrectAnswerOverlay = false
@@ -373,14 +333,11 @@ struct TestFlashcardsView: View {
                                         }
                                     }
                                 )
-                                
                                 Spacer()
                             }
-                            
                         }
                         .onAppear {
                             textFieldFocus = true
-                            
                             rectangleWidth = isLandscape ? geometry.size.width * 0.75 : geometry.size.width * 0.95
                             rectangleHeight = isLandscape ? 340 : 300
                         }
@@ -392,7 +349,7 @@ struct TestFlashcardsView: View {
                                             .font(.title)
                                             .foregroundColor(.white)
                                             .padding(10)
-                                        Text("You've answered 5 questions correctly.")
+                                        Text("You've answered 25 questions.")
                                             .foregroundColor(.white)
                                             .padding(5)
                                         Text("Your score: \(score)")
@@ -401,7 +358,6 @@ struct TestFlashcardsView: View {
                                         Text("Enter your name below:")
                                             .foregroundColor(.white)
                                             .padding(5)
-                                        
                                         TextField("Name", text: $playerName)
                                             .textFieldStyle(RoundedBorderTextFieldStyle())
                                             .padding(.horizontal, 20)
@@ -420,8 +376,6 @@ struct TestFlashcardsView: View {
                                         .shadow(radius: 20)
                                         .bold()
                                         .padding(10)
-                                        
-                                        
                                     }
                                     .frame(width: geometry.size.width * 0.85, height: 375)
                                     .background(Color.blue.gradient)
@@ -430,10 +384,8 @@ struct TestFlashcardsView: View {
                                     .onAppear {
                                         calculateScore()
                                     }
-                                    
                                     Spacer()
                                 }
-                                
                             }
                         )
                     }
@@ -442,23 +394,23 @@ struct TestFlashcardsView: View {
             }
             .onAppear(){
                 generateQuestion()
-                
                 rectangleWidth = isLandscape ? geometry.size.width * 0.75 : geometry.size.width * 0.95
                 rectangleHeight = isLandscape ? 300 : 300
             }
         }
     }
     
-    
     private func generateQuestion() {
         var num1: Int
         var num2: Int
+        var symbol: String
         
         switch operation {
         case .addition:
             num1 = Int.random(in: 1...10)
             num2 = Int.random(in: 1...10)
-            question = "\(num1) + \(num2)"
+            symbol = "+"
+            question = "\(num1) \(symbol) \(num2)"
             correctAnswer = num1 + num2
         case .subtraction:
             num1 = Int.random(in: 1...10)
@@ -466,43 +418,45 @@ struct TestFlashcardsView: View {
             if num2 > num1 {
                 swap(&num1, &num2)
             }
-            question = "\(num1) - \(num2)"
+            symbol = "-"
+            question = "\(num1) \(symbol) \(num2)"
             correctAnswer = num1 - num2
         case .multiplication:
             num1 = Int.random(in: 1...10)
             num2 = Int.random(in: 1...10)
-            question = "\(num1) × \(num2)"
+            symbol = "×"
+            question = "\(num1) \(symbol) \(num2)"
             correctAnswer = num1 * num2
         case .division:
             num2 = Int.random(in: 1...10)
             let multiplier = Int.random(in: 1...10)
             num1 = num2 * multiplier
-            question = "\(num1) / \(num2)"
+            symbol = "÷"
+            question = "\(num1) \(symbol) \(num2)"
             correctAnswer = num1 / num2
         }
+        
+        userAnswer = "" // Clear the text entry field
     }
-    
     
     func checkAnswer() {
         if let userIntAnswer = Int(userAnswer), userIntAnswer == correctAnswer {
             correctAnsweredFlashCards += 1
-            
             calculateScore()  // update score
-            
-            if correctAnsweredFlashCards == 5 {
-                showCustomNameEntryAlert = true
+            if correctAnsweredFlashCards + incorrectAnsweredFlashCards == 25 {
+                showCustomNameEntryAlert = true // End the test
             } else {
                 showCorrectAnswerOverlay = true
+                generateQuestion() // Move on to the next question
             }
-            generateQuestion()
-            userAnswer = ""  // Clears the input
+            userAnswer = ""
         } else {
             incorrectAnsweredFlashCards += 1
-            
             calculateScore()  // update score
-            
             showIncorrectAnswerOverlay = true
-            userAnswer = ""  // Clears the input
+            lastCorrectAnswer = String(correctAnswer) // Store the last correct answer
+            userAnswer = lastCorrectAnswer // Show the last correct answer for the current question
+            generateQuestion()
         }
     }
     
@@ -512,17 +466,12 @@ struct TestFlashcardsView: View {
         
         if totalQuestions == 0 {
             score = 0
-            return
+        } else {
+            let correctPercentage = Double(correctAnsweredFlashCards) / Double(totalQuestions) * 100.0
+            score = correctPercentage
         }
-        
-        let correctPercentage = Double(correctAnsweredFlashCards) / Double(totalQuestions)
-        let incorrectPercentage = Double(incorrectAnsweredFlashCards) / Double(totalQuestions)
-        
-        score = (correctPercentage * 100) - (incorrectPercentage * 50)
-        
-        // Ensure the score is within 0 and 100
-        score = max(0, min(score, 100))
     }
+
     
     
     func savePlayerScore() {

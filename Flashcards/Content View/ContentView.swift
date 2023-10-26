@@ -49,12 +49,35 @@ struct ContentView: View {
                     VStack {
                         ScrollView(.vertical, showsIndicators: false) {
                             HStack {
+                                Button {
+                                    showDataOverlay.toggle()
+                                } label: {
+                                    HStack {
+                                        Text("Scoreboard")
+                                        Image(systemName: "trophy")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .foregroundColor(.white)
+                                    }
+                                    .frame(width: geometry.size.width * 0.5, height: 60)
+                                    .background(Color.blue)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                                    .padding()
+                                }
+                            }
+                            .padding(.top, 85)  // this keeps the scrollable content below the header at start
+                            
+                            
+                            
+                            
+                            HStack {
                                 Text("Practice Math Flashcards")
                                     .font(.headline)
                                     
                                 
                             }
-                            .padding(.top, 85)  // this keeps the scrollable content below the header at start
+                            
                             
                             
                             ScrollView(.horizontal, showsIndicators: false) {
@@ -90,14 +113,7 @@ struct ContentView: View {
                             
 
                             
-                            Button("Show Data") {
-                                showDataOverlay.toggle()
-                            }
-                            .frame(width: geometry.size.width * 0.5, height: 60)
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                            .padding()
+                           
                             
                             
                         }
@@ -118,13 +134,13 @@ struct ContentView: View {
                                     NavigationLink {
                                         VStack {
                                             Text("Name: \(item.name)")
-                                            Text("Score: \(item.score)")
+                                            Text("Score: \(Int(item.score))%")
                                             Text("Created: \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
                                             Text("ID: \(item.id)")
                                         }
                                         
                                     } label: {
-                                        Text("\(item.name) scored \(item.score)")
+                                        Text("\(item.name) scored \(Int(item.score))%")
                                         
                                     }
                                 }
@@ -134,11 +150,11 @@ struct ContentView: View {
                                 ToolbarItem(placement: .navigationBarTrailing) {
                                     EditButton()
                                 }
-                                ToolbarItem {
-                                    Button(action: addItem) {
-                                        Label("Add Item", systemImage: "plus")
-                                    }
-                                }
+//                                ToolbarItem {
+//                                    Button(action: addItem) {
+//                                        Label("Add Item", systemImage: "plus")
+//                                    }
+//                                }
                             }
                             Button(action: {
                                 showDataOverlay = false

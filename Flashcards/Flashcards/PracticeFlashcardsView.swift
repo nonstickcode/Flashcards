@@ -145,42 +145,38 @@ struct PracticeFlashcardsView: View {
     private func generateQuestion() {
         var num1: Int
         var num2: Int
-        
+        var symbol: String
+
         switch operation {
         case .addition:
-            num1 = Int.random(in: bottomRange...topRange)
-            num2 = Int.random(in: bottomRange...topRange)
-            question = "\(num1) + \(num2)"
+            num1 = Int.random(in: 1...10)
+            num2 = Int.random(in: 1...10)
+            symbol = "+"
+            question = "\(num1) \(symbol) \(num2)"
             correctAnswer = num1 + num2
-            
         case .subtraction:
-            num1 = Int.random(in: bottomRange...topRange)
-            num2 = Int.random(in: bottomRange...topRange)
+            num1 = Int.random(in: 1...10)
+            num2 = Int.random(in: 1...10)
             if num2 > num1 {
                 swap(&num1, &num2)
             }
-            question = "\(num1) - \(num2)"
+            symbol = "-"
+            question = "\(num1) \(symbol) \(num2)"
             correctAnswer = num1 - num2
-            
         case .multiplication:
-            num1 = Int.random(in: bottomRange...topRange)
-            num2 = Int.random(in: bottomRange...topRange)
-            question = "\(num1) × \(num2)"
+            num1 = Int.random(in: 1...10)
+            num2 = Int.random(in: 1...10)
+            symbol = "×"
+            question = "\(num1) \(symbol) \(num2)"
             correctAnswer = num1 * num2
-            
         case .division:
-            num2 = Int.random(in: bottomRange...topRange)
-            // Make sure num2 is not zero before proceeding
-            while num2 == 0 {
-                num2 = Int.random(in: bottomRange...topRange)
-            }
-            let multiplier = Int.random(in: bottomRange...topRange)
+            num2 = Int.random(in: 1...10)
+            let multiplier = Int.random(in: 1...10)
             num1 = num2 * multiplier
-            question = "\(num1) / \(num2)"
+            symbol = "÷"
+            question = "\(num1) \(symbol) \(num2)"
             correctAnswer = num1 / num2
         }
-        
-        
     }
     
     
