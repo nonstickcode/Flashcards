@@ -352,7 +352,7 @@ struct TestFlashcardsView: View {
                                         Text("You've answered 25 questions.")
                                             .foregroundColor(.white)
                                             .padding(5)
-                                        Text("Your score: \(score)")
+                                        Text("Your score: \(Int(score))%")
                                             .foregroundColor(.white)
                                             .padding(5)
                                         Text("Enter your name below:")
@@ -442,15 +442,19 @@ struct TestFlashcardsView: View {
     func checkAnswer() {
         if let userIntAnswer = Int(userAnswer), userIntAnswer == correctAnswer {
             correctAnsweredFlashCards += 1
-            calculateScore()  // update score
+            calculateScore()
             if correctAnsweredFlashCards + incorrectAnsweredFlashCards == 25 {
-                showCustomNameEntryAlert = true // End the test
+                showCustomNameEntryAlert = true
             } else {
                 showCorrectAnswerOverlay = true
-                generateQuestion() // Move on to the next question
+                generateQuestion()
             }
             userAnswer = ""
         } else {
+            if correctAnsweredFlashCards + incorrectAnsweredFlashCards == 25 {
+                showCustomNameEntryAlert = true
+            }
+            
             incorrectAnsweredFlashCards += 1
             calculateScore()  // update score
             showIncorrectAnswerOverlay = true
