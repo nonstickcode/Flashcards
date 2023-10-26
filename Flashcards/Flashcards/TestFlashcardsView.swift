@@ -443,26 +443,24 @@ struct TestFlashcardsView: View {
         if let userIntAnswer = Int(userAnswer), userIntAnswer == correctAnswer {
             correctAnsweredFlashCards += 1
             calculateScore()
-            if correctAnsweredFlashCards + incorrectAnsweredFlashCards == 25 {
-                showCustomNameEntryAlert = true
-            } else {
-                showCorrectAnswerOverlay = true
-                generateQuestion()
-            }
-            userAnswer = ""
+            showCorrectAnswerOverlay = true
         } else {
-            if correctAnsweredFlashCards + incorrectAnsweredFlashCards == 25 {
-                showCustomNameEntryAlert = true
-            }
-            
             incorrectAnsweredFlashCards += 1
-            calculateScore()  // update score
+            calculateScore()
             showIncorrectAnswerOverlay = true
-            lastCorrectAnswer = String(correctAnswer) // Store the last correct answer
-            userAnswer = lastCorrectAnswer // Show the last correct answer for the current question
+            lastCorrectAnswer = String(correctAnswer)
+            userAnswer = lastCorrectAnswer
+        }
+        
+        if correctAnsweredFlashCards + incorrectAnsweredFlashCards == 25 {
+            showCustomNameEntryAlert = true
+        } else {
             generateQuestion()
         }
+        
+        userAnswer = ""
     }
+
     
     
     private func calculateScore() {
