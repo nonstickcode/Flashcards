@@ -18,7 +18,7 @@ struct RoundedRectangleContainer<Content: View>: View {
         Rectangle()
             .frame(height: 200)
             .containerRelativeFrame(.horizontal)
-            .background(.green.gradient)
+            .background(.orange.opacity(0.8).gradient)
             .foregroundColor(.clear)
             .overlay(content)
             .clipShape(.rect(cornerRadius: 25))

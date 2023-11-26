@@ -13,6 +13,16 @@ struct PracticeFlashcardsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
     
+    var numberRangeLimit: Int = 10 // Default value, can be changed by the user in settings
+    
+    // 0 - 10 = beginner dificulty
+    // 0 - 20 = intermediate
+    // 0 - 100 = advanced  -  answer total 100 or less
+    // add and subtract has all 3
+    // multiply and divide has only outer 2 with beginer as 0 - 5 and 0 - 12 for advanced
+    
+    
+    
     
     var operation: MathOperation
     @State var question: String = ""
@@ -146,17 +156,19 @@ struct PracticeFlashcardsView: View {
         var num1: Int
         var num2: Int
         var symbol: String
+        
+        let range = 0...numberRangeLimit
 
         switch operation {
         case .addition:
-            num1 = Int.random(in: 1...10)
-            num2 = Int.random(in: 1...10)
+            num1 = Int.random(in: range)
+            num2 = Int.random(in: range)
             symbol = "+"
             question = "\(num1) \(symbol) \(num2)"
             correctAnswer = num1 + num2
         case .subtraction:
-            num1 = Int.random(in: 1...10)
-            num2 = Int.random(in: 1...10)
+            num1 = Int.random(in: range)
+            num2 = Int.random(in: range)
             if num2 > num1 {
                 swap(&num1, &num2)
             }
@@ -164,14 +176,14 @@ struct PracticeFlashcardsView: View {
             question = "\(num1) \(symbol) \(num2)"
             correctAnswer = num1 - num2
         case .multiplication:
-            num1 = Int.random(in: 1...10)
-            num2 = Int.random(in: 1...10)
+            num1 = Int.random(in: range)
+            num2 = Int.random(in: range)
             symbol = "×"
             question = "\(num1) \(symbol) \(num2)"
             correctAnswer = num1 * num2
         case .division:
-            num2 = Int.random(in: 1...10)
-            let multiplier = Int.random(in: 1...10)
+            num2 = Int.random(in: range)
+            let multiplier = Int.random(in: range)
             num1 = num2 * multiplier
             symbol = "÷"
             question = "\(num1) \(symbol) \(num2)"

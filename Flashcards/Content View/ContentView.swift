@@ -40,7 +40,7 @@ struct ContentView: View {
                     
                     HeaderView()
                         .frame(width: geometry.size.width, height: 60)
-                        .background(Color.teal.opacity(0.8))
+                        .background(Color.blue.opacity(0.8))
                         .foregroundColor(.white)
                         .zIndex(1)
                         .position(x: geometry.size.width / 2, y: 30)  // Position the header at the top
@@ -54,13 +54,14 @@ struct ContentView: View {
                                 } label: {
                                     HStack {
                                         Text("Scoreboard")
+                                            .bold()
                                         Image(systemName: "trophy")
                                             .resizable()
                                             .frame(width: 20, height: 20)
                                             .foregroundColor(.white)
                                     }
                                     .frame(width: geometry.size.width * 0.5, height: 60)
-                                    .background(Color.blue)
+                                    .background(Color.green)
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
                                     .padding()
@@ -70,14 +71,12 @@ struct ContentView: View {
                             
                             
                             
-                            
+                            Divider()
                             HStack {
                                 Text("Practice Math Flashcards")
                                     .font(.headline)
-                                    
-                                
                             }
-                            
+                            Divider()
                             
                             
                             ScrollView(.horizontal, showsIndicators: false) {
@@ -92,12 +91,12 @@ struct ContentView: View {
                             .contentMargins(75, for: .scrollContent)
                             
                            
-
+                            Divider()
                             HStack {
                                 Text("Test Math Flashcards")
                                     .font(.headline)
-                                
                             }
+                            Divider()
                             
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack {
@@ -118,6 +117,7 @@ struct ContentView: View {
                             
                         }
                     }
+//                    .background(Color.black.opacity(0.1))
                     
                 }
             }
@@ -134,8 +134,8 @@ struct ContentView: View {
                                     NavigationLink {
                                         VStack {
                                             Text("\(item.name)")
-                                            Text("scored \(Int(item.score))%")
-                                            Text("on \(item.category) test taken")
+                                            Text("scored \(Int(item.score))% on")
+                                            Text("a \(item.category) test")
                                             Text("\(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
 //                                                 Text("ID: \(item.id)")
                                         }
@@ -171,7 +171,7 @@ struct ContentView: View {
                         
                         .frame(width: geometry.size.width * 0.9, height: geometry.size.height * 1)
                         .background(Color.white)
-                        .cornerRadius(15)
+                        .cornerRadius(1)
                         .border(.black, width: 2)
                         
                     }
