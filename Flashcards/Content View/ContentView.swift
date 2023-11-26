@@ -133,10 +133,11 @@ struct ContentView: View {
                                 ForEach(sortedItems, id: \.id) { item in
                                     NavigationLink {
                                         VStack {
-                                            Text("Name: \(item.name)")
-                                            Text("Score: \(Int(item.score))%")
-                                            Text("Created: \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                                            Text("ID: \(item.id)")
+                                            Text("\(item.name)")
+                                            Text("scored \(Int(item.score))%")
+                                            Text("on \(item.category) test taken")
+                                            Text("\(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+//                                                 Text("ID: \(item.id)")
                                         }
                                         
                                     } label: {

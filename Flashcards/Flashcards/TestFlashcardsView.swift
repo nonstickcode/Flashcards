@@ -487,6 +487,18 @@ struct TestFlashcardsView: View {
         }
         newItem.score = score
         
+        // Set the category based on the selected operation
+         switch operation {
+         case .addition:
+             newItem.category = "Addition"
+         case .subtraction:
+             newItem.category = "Subtraction"
+         case .multiplication:
+             newItem.category = "Multiplication"
+         case .division:
+             newItem.category = "Division"
+         }
+        
         // Insert into data store
         modelContext.insert(newItem)
     }

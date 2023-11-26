@@ -10,7 +10,7 @@ import SwiftUI
 struct HeaderView: View {
     var body: some View {
         HStack {
-            Text("Learning App")
+            Text("Mathcards")
                 .font(.largeTitle)
                 .bold()
         }
