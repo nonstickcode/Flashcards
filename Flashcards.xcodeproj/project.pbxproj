@@ -18,6 +18,8 @@
 		2B1E58F92AB64DD600600305 /* TestFlashcardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1E58F82AB64DD600600305 /* TestFlashcardsView.swift */; };
 		2B1E58FB2AB64E2A00600305 /* FlashNoteCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1E58FA2AB64E2A00600305 /* FlashNoteCard.swift */; };
 		2B1E58FD2AB650D400600305 /* OGContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1E58FC2AB650D400600305 /* OGContentView.swift */; };
+		2B592F032B13F6A900655AD4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B592F022B13F6A900655AD4 /* SettingsView.swift */; };
+		2B592F052B13F9E800655AD4 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B592F042B13F9E800655AD4 /* SettingsViewModel.swift */; };
 		2BB52A6E2ABA1E95009E2A8F /* PracticeFlashcardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB52A6D2ABA1E95009E2A8F /* PracticeFlashcardsView.swift */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +36,8 @@
 		2B1E58F82AB64DD600600305 /* TestFlashcardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFlashcardsView.swift; sourceTree = "<group>"; };
 		2B1E58FA2AB64E2A00600305 /* FlashNoteCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashNoteCard.swift; sourceTree = "<group>"; };
 		2B1E58FC2AB650D400600305 /* OGContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OGContentView.swift; sourceTree = "<group>"; };
+		2B592F022B13F6A900655AD4 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		2B592F042B13F9E800655AD4 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		2BB52A6D2ABA1E95009E2A8F /* PracticeFlashcardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeFlashcardsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -71,6 +75,7 @@
 				2B1E58E62AB6374900600305 /* Assets.xcassets */,
 				2BF6C8642AB6973A00127F9A /* Content View */,
 				2BF6C8632AB6972300127F9A /* Header View */,
+				2B592F012B13F68D00655AD4 /* Settings View */,
 				2BF6C8622AB6970400127F9A /* Operation Buttons */,
 				2BF6C8612AB696E200127F9A /* Flashcards */,
 				2B1E58F72AB64DA700600305 /* Core Data */,
@@ -94,6 +99,15 @@
 				2B1E58E42AB6374700600305 /* Item.swift */,
 			);
 			path = "Core Data";
+			sourceTree = "<group>";
+		};
+		2B592F012B13F68D00655AD4 /* Settings View */ = {
+			isa = PBXGroup;
+			children = (
+				2B592F022B13F6A900655AD4 /* SettingsView.swift */,
+				2B592F042B13F9E800655AD4 /* SettingsViewModel.swift */,
+			);
+			path = "Settings View";
 			sourceTree = "<group>";
 		};
 		2BF6C8612AB696E200127F9A /* Flashcards */ = {
@@ -211,6 +225,8 @@
 				2B1E58F42AB64D3000600305 /* OperationButtonView.swift in Sources */,
 				2BB52A6E2ABA1E95009E2A8F /* PracticeFlashcardsView.swift in Sources */,
 				2B1E58F22AB64C2700600305 /* HeaderView.swift in Sources */,
+				2B592F032B13F6A900655AD4 /* SettingsView.swift in Sources */,
+				2B592F052B13F9E800655AD4 /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,14 +13,7 @@ struct PracticeFlashcardsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
     
-    var numberRangeLimit: Int = 10 // Default value, can be changed by the user in settings
-    
-    // 0 - 10 = beginner dificulty
-    // 0 - 20 = intermediate
-    // 0 - 100 = advanced  -  answer total 100 or less
-    // add and subtract has all 3
-    // multiply and divide has only outer 2 with beginer as 0 - 5 and 0 - 12 for advanced
-    
+    var numberRangeLimit: Int = 10 // this is current difficulty setting default to 10 then below its used ot generate questions
     
     
     

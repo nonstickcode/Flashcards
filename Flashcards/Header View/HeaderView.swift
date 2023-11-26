@@ -8,29 +8,35 @@
 import SwiftUI
 
 struct HeaderView: View {
+    @StateObject private var settingsViewModel = SettingsViewModel()
+
     var body: some View {
         HStack {
             Spacer()
                 .frame(width: 30, height: 30)
                 .padding(.leading, 10)
-            
+
             Text("Mathcards")
                 .font(.largeTitle)
                 .bold()
-                .frame(maxWidth: .infinity, alignment: .center) // Align text to the left
+                .frame(maxWidth: .infinity, alignment: .center)
 
-            Image(systemName: "gear")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 30, height: 30)
-                .foregroundColor(.white)
-                .padding(.trailing, 10) // Adjust the trailing padding
+            NavigationLink(destination: SettingsView(settingsViewModel: settingsViewModel)) {
+                Image(systemName: "gear")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 30, height: 30)
+                    .foregroundColor(.white)
+                    .padding(.trailing, 10)
+            }
         }
-        .padding() // Add padding to the HStack if needed
+        .padding()
     }
 }
 
-
-#Preview {
-    HeaderView()
+struct HeaderView_Previews: PreviewProvider {
+    static var previews: some View {
+        HeaderView()
+    }
 }
+
