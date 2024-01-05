@@ -1,5 +1,9 @@
 # Flashcards - iOS App
 
+[View Beta Deployment in TestFlight](https://testflight.apple.com/join/bNk8Qk2i)
+
+![Project Image](./readme-image.jpeg)
+
 ## Overview
 
 Flashcards is an engaging and interactive iOS app developed as a personal solo project. This app is built using Swift and offers a user-friendly experience for learning through flashcards. Currently in Beta testing, Flashcards is available on Apple TestFlight, allowing users to experience and provide feedback on the latest features.
